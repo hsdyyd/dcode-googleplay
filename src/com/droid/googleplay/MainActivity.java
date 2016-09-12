@@ -21,15 +21,29 @@ public class MainActivity extends ActionBarActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
+//		mActionBar = getSupportActionBar();
+//		mActionBar.setTitle("GooglePlay");
+//		mActionBar.setSubtitle("good app");
+//		mActionBar.setIcon(R.drawable.ic_launcher);
+//		mActionBar.setDisplayShowTitleEnabled(true);
+//		mActionBar.setDisplayShowHomeEnabled(true);
+//		mActionBar.setDisplayHomeAsUpEnabled(true);
+		
+		initActionBar();
+		
+	}
+	
+
+	private void initActionBar()
+	{
 		mActionBar = getSupportActionBar();
 		mActionBar.setTitle("GooglePlay");
-//		mActionBar.setSubtitle("good app");
 		mActionBar.setIcon(R.drawable.ic_launcher);
 		mActionBar.setDisplayShowTitleEnabled(true);
 		mActionBar.setDisplayShowHomeEnabled(true);
 		mActionBar.setDisplayHomeAsUpEnabled(true);
 	}
-	
+
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
