@@ -59,4 +59,15 @@
 		{
 			return mMainTitles[position];
 		}
+
+###7. 设置PagerSlidingTabStrip的样式
 	
+	<com.astuetz.PagerSlidingTabStrip
+        xmlns:droid="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/main_tabs"
+        android:layout_width="match_parent"
+        android:layout_height="48dp" 
+        droid:pstsIndicatorColor="#ff0000"
+        droid:pstsIndicatorHeight="8dp"
+        >
+

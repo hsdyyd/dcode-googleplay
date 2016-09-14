@@ -1,6 +1,6 @@
 package com.droid.googleplay;
 
-import com.astuetz.PagerSlidingTabStrip;
+import com.astuetz.PagerSlidingTabStripExtand;
 import com.droid.googleplay.utils.UIUtils;
 
 import android.os.Bundle;
@@ -22,7 +22,7 @@ import android.widget.TextView;
 public class MainActivity extends ActionBarActivity
 {
 	private ActionBar mActionBar;
-	private PagerSlidingTabStrip mTabs;
+	private PagerSlidingTabStripExtand mTabs;
 	/**
 	 * v4包源码关联
 	 * 路径:android_sdk_home/extras/android/support/v4/src/java
@@ -54,7 +54,7 @@ public class MainActivity extends ActionBarActivity
 	/**初始化view**/
 	private void initView()
 	{
-		mTabs = (PagerSlidingTabStrip) findViewById(R.id.main_tabs);
+		mTabs = (PagerSlidingTabStripExtand) findViewById(R.id.main_tabs);
 		mViewPager = (ViewPager) findViewById(R.id.main_viewpager);
 	}
 	
@@ -131,6 +131,7 @@ public class MainActivity extends ActionBarActivity
 			container.removeView((View) object);
 		}
 		/**必须重写此方法,否则tabs没有标签文本,会报空指针**/
+		
 		@Override
 		public CharSequence getPageTitle(int position)
 		{

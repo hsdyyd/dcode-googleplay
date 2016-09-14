@@ -4,11 +4,19 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.astuetz.PagerSlidingTabStrip
+    <com.astuetz.PagerSlidingTabStripExtand
+        xmlns:droid="http://schemas.android.com/apk/res-auto"
         android:id="@+id/main_tabs"
         android:layout_width="match_parent"
-        android:layout_height="48dp" >
-    </com.astuetz.PagerSlidingTabStrip>
+        android:layout_height="48dp" 
+        droid:pstsIndicatorColor="#ff0000"
+        droid:pstsIndicatorHeight="8dp"
+        droid:pstsTabTextSize="20sp"
+        droid:pstsTabTextColor="#0000ff"
+        droid:pstsSelectedTabTextSize="26sp"
+        droid:pstsSelectedTabTextColor="#00ff00"
+        >
+    </com.astuetz.PagerSlidingTabStripExtand>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/main_viewpager"
