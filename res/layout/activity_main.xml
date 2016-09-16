@@ -9,12 +9,13 @@
         android:id="@+id/main_tabs"
         android:layout_width="match_parent"
         android:layout_height="48dp" 
-        droid:pstsIndicatorColor="#ff0000"
-        droid:pstsIndicatorHeight="8dp"
-        droid:pstsTabTextSize="20sp"
-        droid:pstsTabTextColor="#0000ff"
-        droid:pstsSelectedTabTextSize="26sp"
-        droid:pstsSelectedTabTextColor="#00ff00"
+        
+        droid:pstsIndicatorColor="@color/tab_indicator_selected"
+        droid:pstsIndicatorHeight="5dp"
+        droid:pstsTabTextSize="16sp" 
+        droid:pstsTabTextColor="@color/tab_text_normal"
+        droid:pstsSelectedTabTextSize="18sp"
+        droid:pstsSelectedTabTextColor="@color/tab_text_selected"
         >
     </com.astuetz.PagerSlidingTabStripExtand>
 
