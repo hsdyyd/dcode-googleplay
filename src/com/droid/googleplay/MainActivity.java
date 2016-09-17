@@ -7,6 +7,7 @@ import com.droid.googleplay.factory.FragmentFactory;
 import com.droid.googleplay.utils.UIUtils;
 
 import android.os.Bundle;
+import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -14,6 +15,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -36,6 +38,8 @@ public class MainActivity extends ActionBarActivity
 	 */
 	private ViewPager					mViewPager;
 	private String[]					mMainTitles;
+	private DrawerLayout mDrawerLayout;
+	private ActionBarDrawerToggle mToggle;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -53,16 +57,20 @@ public class MainActivity extends ActionBarActivity
 
 		initView();
 		initActionBar();
+		initActionBarToggle();
 		initData();
 		initListener();
 		
 	}
+
 
 	/** 初始化view **/
 	private void initView()
 	{
 		mTabs = (PagerSlidingTabStripExtends) findViewById(R.id.main_tabs);
 		mViewPager = (ViewPager) findViewById(R.id.main_viewpager);
+		
+		mDrawerLayout = (DrawerLayout) findViewById(R.id.main_drawer);
 	}
 
 	/** 初始化ActionBar **/
@@ -76,6 +84,20 @@ public class MainActivity extends ActionBarActivity
 		mActionBar.setDisplayHomeAsUpEnabled(true);
 	}
 
+	private void initActionBarToggle()
+	{
+		mToggle = new ActionBarDrawerToggle(MainActivity.this, 
+																 mDrawerLayout, 
+																 R.drawable.ic_drawer_am, 
+																 R.string.open, 
+																 R.string.close);
+		mToggle.syncState();
+		mDrawerLayout.setDrawerListener(mToggle);
+		
+	}
+	
+	
+	
 	/** 初始化数据 **/
 	private void initData()
 	{
@@ -126,9 +148,13 @@ public class MainActivity extends ActionBarActivity
 	public boolean onOptionsItemSelected(MenuItem item)
 	{
 		int id = item.getItemId();
-		if (id == R.id.action_settings)
+		switch (id)
 		{
-			return true;
+			case android.R.id.home:
+				mToggle.onOptionsItemSelected(item);
+				break;
+			default:
+				break;
 		}
 		return super.onOptionsItemSelected(item);
 	}

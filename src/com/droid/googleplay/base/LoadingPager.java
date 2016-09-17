@@ -9,6 +9,8 @@
 package com.droid.googleplay.base;
 
 import com.droid.googleplay.R;
+import com.droid.googleplay.factory.ThreadPoolFactory;
+import com.droid.googleplay.manager.ThreadPoolProxy;
 import com.droid.googleplay.utils.UIUtils;
 
 import android.content.Context;
@@ -88,7 +90,8 @@ public abstract class LoadingPager extends FrameLayout
 			int state = STATE_LOADING;
 			mCurState = state;
 			refreshUI();
-			new Thread(new LoadingTask()).start();
+//			new Thread(new LoadingTask()).start();
+			ThreadPoolFactory.getNormalPool().execute(new LoadingTask());
 		}
 	}
 

@@ -212,4 +212,125 @@
 ###15. loadingpager和basefragment的7个优化
 	
 ###16. 线程池的引入
+	TimeUnit unit = TimeUnit.MILLISECONDS;
+					BlockingQueue<Runnable> workQueue = new LinkedBlockingQueue<Runnable>();
+					ThreadFactory threadFactory = Executors.defaultThreadFactory();
+					RejectedExecutionHandler handler = new ThreadPoolExecutor.AbortPolicy();
+					mExecutor = new ThreadPoolExecutor(mCorePoolSize, 
+							mMaximumPoolSize, 
+							mKeepAliveTime, 
+							unit, 
+							workQueue, 
+							threadFactory, 
+							handler);
+
+###17. 创建线程池工厂
+	public class ThreadPoolFactory
+	{
+		static ThreadPoolProxy mNormalPool;
+		static ThreadPoolProxy mDownloadPool;
+	}
+
+###18. 项目中使用线程池
+
+###19. homefragment中使用listview
+
+###20. homeholder的抽取
+	public class HomeHolder
+	{
+	public View mViewHolder;
+	TextView mTvTmp1;
+	TextView mTvTmp2;
+	private String mData;
 	
+	public HomeHolder()
+	{
+		mViewHolder = initView();
+		mViewHolder.setTag(this);
+	}
+
+	private View initView()
+	{
+		View view = View.inflate(UIUtils.getContext(), R.layout.item_tmp, null);
+		mTvTmp1 = (TextView) view.findViewById(R.id.tmp_tv_1);
+		mTvTmp2 = (TextView) view.findViewById(R.id.tmp_tv_2);
+		
+		return view;
+	}
+	
+	public void setDataAndRefreshHolderView(String data)
+	{
+		mData = data;
+		refreshHolderView(mData);
+	}
+	
+	public void refreshHolderView(String data)
+	{
+		mTvTmp1.setText("我是头: "+data);
+		mTvTmp2.setText("我是尾: "+data);
+	}
+	}
+
+###21. baseholder的抽取
+	public abstract class BaseHolder<T>
+	{
+		public View mViewHolder;
+		private T mData;
+		
+		public BaseHolder()
+		{
+			mViewHolder = initHolderView();
+			mViewHolder.setTag(this);
+		}
+	
+		public void setDataAndRefreshHolderView(T data)
+		{
+			mData = data;
+			refreshHolderView(mData);
+		}
+		
+		public abstract View initHolderView();
+		public abstract void refreshHolderView(T data);
+	}
+
+	public class HomeHolder extends BaseHolder<String>
+	{
+		private TextView mTvTmp1;
+		private TextView mTvTmp2;
+	
+		public View initHolderView()
+		{
+			View view = View.inflate(UIUtils.getContext(), R.layout.item_tmp, null);
+			mTvTmp1 = (TextView) view.findViewById(R.id.tmp_tv_1);
+			mTvTmp2 = (TextView) view.findViewById(R.id.tmp_tv_2);
+			
+			return view;
+		}
+		
+		public void refreshHolderView(String data)
+		{
+			mTvTmp1.setText("我是头: "+data);
+			mTvTmp2.setText("我是尾: "+data);
+		}
+	}
+
+###22. baseholder与superbaseadapter整合
+	public View getView(int position, View convertView, ViewGroup parent)
+	{
+		BaseHolder holder;
+		if(convertView==null)
+		{
+			holder = getSpecialHolder();
+		}
+		else
+		{
+			holder = (BaseHolder) convertView.getTag();
+		}
+		holder.setDataAndRefreshHolderView(mDataSource.get(position));
+		
+		return holder.mViewHolder;
+	}
+
+	public abstract BaseHolder getSpecialHolder();
+
+###23. 

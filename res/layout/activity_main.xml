@@ -1,28 +1,51 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:id="@+id/main_drawer"
+     >
 
-    <com.astuetz.PagerSlidingTabStripExtends
-        xmlns:droid="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/main_tabs"
+    <FrameLayout
+        android:id="@+id/main_left"
+		android:layout_width="180dp"
+    	android:layout_height="match_parent"
+    	android:layout_gravity="left"
+    	android:background="#ff0000"
+		>
+    </FrameLayout>
+    <FrameLayout
+        android:id="@+id/main_right"
+		android:layout_width="180dp"
+    	android:layout_height="match_parent"
+    	android:layout_gravity="right"
+    	android:background="#00ff00"
+		>
+    </FrameLayout>
+    
+    <LinearLayout
+        xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="vertical" 
         android:layout_width="match_parent"
-        android:layout_height="48dp" 
-        
-        droid:pstsIndicatorColor="@color/tab_indicator_selected"
-        droid:pstsIndicatorHeight="5dp"
-        droid:pstsTabTextSize="16sp" 
-        droid:pstsTabTextColor="@color/tab_text_normal"
-        droid:pstsSelectedTabTextSize="18sp"
-        droid:pstsSelectedTabTextColor="@color/tab_text_selected"
+   		android:layout_height="match_parent"
         >
-    </com.astuetz.PagerSlidingTabStripExtends>
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/main_viewpager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" >
-    </android.support.v4.view.ViewPager>
+        <com.astuetz.PagerSlidingTabStripExtends
+            xmlns:droid="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/main_tabs"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            droid:pstsIndicatorColor="@color/tab_indicator_selected"
+            droid:pstsIndicatorHeight="5dp"
+            droid:pstsSelectedTabTextColor="@color/tab_text_selected"
+            droid:pstsSelectedTabTextSize="18sp"
+            droid:pstsTabTextColor="@color/tab_text_normal"
+            droid:pstsTabTextSize="16sp" >
+        </com.astuetz.PagerSlidingTabStripExtends>
 
-</LinearLayout>
+        <android.support.v4.view.ViewPager
+            android:id="@+id/main_viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+        </android.support.v4.view.ViewPager>
+    </LinearLayout>
+
+</android.support.v4.widget.DrawerLayout>
