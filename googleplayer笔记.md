@@ -84,3 +84,22 @@
 	// 根据FragmentPagerAdapter适配器的getItem(int position)来创建对应的fragment
 	public static Fragment getFragment(int position)
 	
+###10. 对viewpager上显示的fragment实现缓存
+	SparseArrayCompat<Fragment> cacheFragment = new SparseArrayCompat<Fragment>();
+		
+	Fragment tempFragment = cacheFragment.get(position);
+	if(tempFragment!=null)
+	{
+		fragment = tempFragment;
+		return fragment;
+	}
+
+	cacheFragment.put(position, fragment);
+
+###11. fragment普通封装
+* 1.继承自fragment
+* 2.重写相关常用方法
+* 3.onCreateView方法中返回显示视图
+
+###12. fragment中4种常见显示界面
+	

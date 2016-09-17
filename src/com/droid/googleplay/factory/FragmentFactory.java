@@ -9,6 +9,7 @@ import com.droid.googleplay.fragment.RecommendFragment;
 import com.droid.googleplay.fragment.SubjectFragment;
 
 import android.support.v4.app.Fragment;
+import android.support.v4.util.SparseArrayCompat;
 
 /**
  * @author yidong
@@ -33,10 +34,21 @@ public class FragmentFactory
 	private static final int	FRAGMENT_RECOMMEND	= 4;
 	private static final int	FRAGMENT_CATEGORY	= 5;
 	private static final int	FRAGMENT_HOT		= 6;
+	private static SparseArrayCompat<Fragment> cacheFragment;
 
 	public static Fragment getFragment(int position)
 	{
 		Fragment fragment = null;
+		
+		cacheFragment = new SparseArrayCompat<Fragment>();
+		
+		Fragment tempFragment = cacheFragment.get(position);
+		if(tempFragment!=null)
+		{
+			fragment = tempFragment;
+			return fragment;
+		}
+		
 		switch (position)
 		{
 			case FRAGMENT_HOME:
@@ -63,6 +75,7 @@ public class FragmentFactory
 			default:
 
 		}
+		cacheFragment.put(position, fragment);		
 
 		return fragment;
 	}

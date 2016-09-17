@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
@@ -75,7 +76,8 @@ public class MainActivity extends ActionBarActivity
 	{
 		mMainTitles = UIUtils.getStringArray(R.array.main_title);
 		
-		MainFragmentAdapter adapter = new MainFragmentAdapter(getSupportFragmentManager());
+//		MainFragmentAdapter adapter = new MainFragmentAdapter(getSupportFragmentManager());
+		MainFragmentStateAdapter adapter = new MainFragmentStateAdapter(getSupportFragmentManager());
 		
 		mViewPager.setAdapter(adapter);
 
@@ -175,4 +177,33 @@ public class MainActivity extends ActionBarActivity
 		}
 
 	}
+
+	class MainFragmentStateAdapter extends FragmentStatePagerAdapter
+	{
+
+		public MainFragmentStateAdapter(FragmentManager fm)
+		{
+			super(fm);
+		}
+
+		@Override
+		public Fragment getItem(int position)
+		{
+			return FragmentFactory.getFragment(position);
+		}
+
+		@Override
+		public int getCount()
+		{
+			return mMainTitles.length;
+		}
+		
+		@Override
+		public CharSequence getPageTitle(int position)
+		{
+			return mMainTitles[position];
+		}
+		
+	}
+
 }

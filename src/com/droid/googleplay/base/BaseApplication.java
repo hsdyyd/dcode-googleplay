@@ -10,12 +10,14 @@ package com.droid.googleplay.base;
 
 import android.app.Application;
 import android.content.Context;
+import android.os.Handler;
 
 public class BaseApplication extends Application
 {
 	private static Context mContext;
 	private static Thread mMainThread;
 	private static long mMainThreadId;
+	private static Handler mHandler;
 
 	@Override
 	public void onCreate()
@@ -25,6 +27,8 @@ public class BaseApplication extends Application
 		mMainThread = Thread.currentThread();
 
 		mMainThreadId = android.os.Process.myTid();
+		
+		mHandler = new Handler();
 
 		super.onCreate();
 	}
@@ -43,6 +47,10 @@ public class BaseApplication extends Application
 	{
 		return mMainThreadId;
 	}
-	
 
+	public static Handler getmHandler()
+	{
+		return mHandler;
+	}
+	
 }
