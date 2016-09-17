@@ -18,12 +18,13 @@ import android.widget.FrameLayout;
 public abstract class LoadingPager extends FrameLayout
 {
 
+	private static final int STATE_NONE = -1;
 	private static final int STATE_LOADING = 0;
 	private static final int STATE_ERROR = 1;
 	private static final int STATE_EMPTY = 2;
 	private static final int STATE_SUCCESS = 3;
 	
-	private int mCurState = STATE_LOADING; // 默认当前状态为加载视图
+	private int mCurState = STATE_NONE; // 默认当前状态为加载视图
 	
 	private View mLoadingView;
 	private View mErrorView;
@@ -43,6 +44,14 @@ public abstract class LoadingPager extends FrameLayout
 		this.addView(mLoadingView);
 		
 		mErrorView = View.inflate(UIUtils.getContext(), R.layout.pager_error, null);
+		mErrorView.findViewById(R.id.error_btn_retry).setOnClickListener(new OnClickListener()
+		{
+			
+			public void onClick(View v)
+			{
+				loadData();
+			}
+		});
 		this.addView(mErrorView);
 		
 		mEmptyView = View.inflate(UIUtils.getContext(), R.layout.pager_empty, null);
@@ -54,7 +63,7 @@ public abstract class LoadingPager extends FrameLayout
 
 	private void refreshUI()
 	{
-		mLoadingView.setVisibility((mCurState==STATE_LOADING)?0:8);
+		mLoadingView.setVisibility(((mCurState==STATE_LOADING)||(mCurState==STATE_NONE))?0:8);
 		
 		mErrorView.setVisibility((mCurState==STATE_ERROR)?0:8);
 		
@@ -73,10 +82,14 @@ public abstract class LoadingPager extends FrameLayout
 		}
 	}
 	
-	
 	public void loadData()
 	{
-		new Thread(new LoadingTask()).start();
+		if(mCurState!=STATE_SUCCESS&&mCurState!=STATE_LOADING){
+			int state = STATE_LOADING;
+			mCurState = state;
+			refreshUI();
+			new Thread(new LoadingTask()).start();
+		}
 	}
 
 	class LoadingTask implements Runnable
@@ -106,7 +119,7 @@ public abstract class LoadingPager extends FrameLayout
 	
 	public enum LoadResult
 	{
-		ERROR(STATE_ERROR),EMPTY(STATE_EMPTY),SUCCESS(STATE_SUCCESS),LOADING(STATE_LOADING);
+		ERROR(STATE_ERROR),EMPTY(STATE_EMPTY),SUCCESS(STATE_SUCCESS);
 		int state;
 		
 		public int getState()

@@ -1,5 +1,6 @@
 package com.droid.googleplay.factory;
 
+import com.droid.googleplay.base.BaseFragment;
 import com.droid.googleplay.fragment.AppFragment;
 import com.droid.googleplay.fragment.CategoryFragment;
 import com.droid.googleplay.fragment.GameFragment;
@@ -34,15 +35,13 @@ public class FragmentFactory
 	private static final int	FRAGMENT_RECOMMEND	= 4;
 	private static final int	FRAGMENT_CATEGORY	= 5;
 	private static final int	FRAGMENT_HOT		= 6;
-	private static SparseArrayCompat<Fragment> cacheFragment;
+	private static SparseArrayCompat<BaseFragment> cacheFragment = new SparseArrayCompat<BaseFragment>();
 
-	public static Fragment getFragment(int position)
+	public static BaseFragment getFragment(int position)
 	{
-		Fragment fragment = null;
+		BaseFragment fragment = null;
 		
-		cacheFragment = new SparseArrayCompat<Fragment>();
-		
-		Fragment tempFragment = cacheFragment.get(position);
+		BaseFragment tempFragment = cacheFragment.get(position);
 		if(tempFragment!=null)
 		{
 			fragment = tempFragment;
@@ -72,8 +71,6 @@ public class FragmentFactory
 			case FRAGMENT_HOT:
 				fragment = new HotFragment();
 				break;
-			default:
-
 		}
 		cacheFragment.put(position, fragment);		
 

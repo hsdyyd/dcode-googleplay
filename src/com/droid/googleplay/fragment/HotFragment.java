@@ -28,7 +28,7 @@ public class HotFragment extends BaseFragment
 	{
 		SystemClock.sleep(2000);
 		
-		LoadResult[] res = {LoadResult.EMPTY,LoadResult.ERROR,LoadResult.LOADING,LoadResult.SUCCESS};
+		LoadResult[] res = {LoadResult.SUCCESS,LoadResult.EMPTY,LoadResult.ERROR};
 		Random random = new Random();
 		int index = random.nextInt(res.length);
 		return res[index];

@@ -1,6 +1,8 @@
 package com.droid.googleplay;
 
 import com.astuetz.PagerSlidingTabStripExtends;
+import com.droid.googleplay.base.BaseFragment;
+import com.droid.googleplay.base.LoadingPager;
 import com.droid.googleplay.factory.FragmentFactory;
 import com.droid.googleplay.utils.UIUtils;
 
@@ -11,6 +13,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -51,6 +54,8 @@ public class MainActivity extends ActionBarActivity
 		initView();
 		initActionBar();
 		initData();
+		initListener();
+		
 	}
 
 	/** 初始化view **/
@@ -76,13 +81,38 @@ public class MainActivity extends ActionBarActivity
 	{
 		mMainTitles = UIUtils.getStringArray(R.array.main_title);
 		
-//		MainFragmentAdapter adapter = new MainFragmentAdapter(getSupportFragmentManager());
-		MainFragmentStateAdapter adapter = new MainFragmentStateAdapter(getSupportFragmentManager());
+		MainFragmentAdapter adapter = new MainFragmentAdapter(getSupportFragmentManager());
+//		MainFragmentStateAdapter adapter = new MainFragmentStateAdapter(getSupportFragmentManager());
 		
 		mViewPager.setAdapter(adapter);
 
 		// 绑定tabs到viewpager上
 		mTabs.setViewPager(mViewPager);
+	}
+
+	private void initListener()
+	{
+		mTabs.setOnPageChangeListener(new OnPageChangeListener()
+		{
+			public void onPageSelected(int position)
+			{
+				BaseFragment fragment = FragmentFactory.getFragment(position);
+				if(fragment!=null)
+				{
+					LoadingPager loadingPager = fragment.getLoadingPager();
+					loadingPager.loadData();
+				}
+			}
+			
+			public void onPageScrolled(int arg0, float arg1, int arg2)
+			{
+			}
+			
+			public void onPageScrollStateChanged(int state)
+			{
+				
+			}
+		});
 	}
 
 	@Override

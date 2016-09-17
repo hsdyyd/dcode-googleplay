@@ -102,4 +102,114 @@
 * 3.onCreateView方法中返回显示视图
 
 ###12. fragment中4种常见显示界面
+	private void initCommonView()
+	{
+		mLoadingView = View.inflate(UIUtils.getContext(), R.layout.pager_loading, null);
+		this.addView(mLoadingView);
+		
+		mErrorView = View.inflate(UIUtils.getContext(), R.layout.pager_error, null);
+		this.addView(mErrorView);
+		
+		mEmptyView = View.inflate(UIUtils.getContext(), R.layout.pager_empty, null);
+		this.addView(mEmptyView);
+		
+		// 当加载完数据后，根据加载数据的状态来确定界面显示的视图
+		refreshUI();
+	}
+
+###13. loadingpager基本实现
+	private void refreshUI()
+	{
+		mLoadingView.setVisibility((mCurState==STATE_LOADING)?0:8);
+		
+		mErrorView.setVisibility((mCurState==STATE_ERROR)?0:8);
+		
+		mEmptyView.setVisibility((mCurState==STATE_EMPTY)?0:8);
+		
+		if(mSuccessView==null&&mCurState==STATE_SUCCESS)
+		{
+			mSuccessView = initSuccessView();
+			
+			this.addView(mSuccessView);
+		}
+		
+		if(mSuccessView!=null)
+		{
+			mSuccessView.setVisibility((mCurState==STATE_SUCCESS)?0:8);
+		}
+	}
+	
+	
+	public void loadData()
+	{
+		new Thread(new LoadingTask()).start();
+	}
+
+	class LoadingTask implements Runnable
+	{
+
+		public void run()
+		{
+			LoadResult tempState = initData();
+			
+			mCurState = tempState.getState();
+			
+			UIUtils.postTaskSafely(new Runnable()
+			{
+				
+				public void run()
+				{
+					refreshUI();
+				}
+			});
+		}
+	}
+	
+	
+	public abstract LoadResult initData();
+	
+	public abstract View initSuccessView();
+	
+	public enum LoadResult
+	{
+		ERROR(STATE_ERROR),EMPTY(STATE_EMPTY),SUCCESS(STATE_SUCCESS),LOADING(STATE_LOADING);
+		int state;
+		
+		public int getState()
+		{
+			return state;
+		}
+
+		LoadResult(int state)
+		{
+			this.state = state;
+		}
+	}
+
+###14. 触发loadDate方法调用
+	mTabs.setOnPageChangeListener(new OnPageChangeListener()
+		{
+			public void onPageSelected(int position)
+			{
+				BaseFragment fragment = FragmentFactory.getFragment(position);
+				if(fragment!=null)
+				{
+					LoadingPager loadingPager = fragment.getLoadingPager();
+					loadingPager.loadData();
+				}
+			}
+			
+			public void onPageScrolled(int arg0, float arg1, int arg2)
+			{
+			}
+			
+			public void onPageScrollStateChanged(int state)
+			{
+				
+			}
+		});
+
+###15. loadingpager和basefragment的7个优化
+	
+###16. 线程池的引入
 	
