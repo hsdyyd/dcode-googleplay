@@ -10,28 +10,54 @@ package com.droid.googleplay.holder;
 
 import com.droid.googleplay.R;
 import com.droid.googleplay.base.BaseHolder;
+import com.droid.googleplay.bean.AppInfoBean;
+import com.droid.googleplay.constant.Constants;
+import com.droid.googleplay.utils.BitmapHelp;
+import com.droid.googleplay.utils.StringUtils;
 import com.droid.googleplay.utils.UIUtils;
+import com.lidroid.xutils.BitmapUtils;
+import com.lidroid.xutils.ViewUtils;
+import com.lidroid.xutils.view.annotation.ViewInject;
 
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
-public class HomeHolder extends BaseHolder<String>
+public class HomeHolder extends BaseHolder<AppInfoBean>
 {
-	private TextView mTvTmp1;
-	private TextView mTvTmp2;
 
+	@ViewInject(R.id.item_appinfo_iv_icon)
+	ImageView mIvIcon;
+	@ViewInject(R.id.item_appinfo_tv_title)
+	TextView mTvTitle;
+	@ViewInject(R.id.item_appinfo_rb_stars)
+	RatingBar mRbStars;
+	@ViewInject(R.id.item_appinfo_tv_size)
+	TextView mTvSize;
+	@ViewInject(R.id.item_appinfo_tv_des)
+	TextView mTvDes;
+	
 	public View initHolderView()
 	{
-		View view = View.inflate(UIUtils.getContext(), R.layout.item_tmp, null);
-		mTvTmp1 = (TextView) view.findViewById(R.id.tmp_tv_1);
-		mTvTmp2 = (TextView) view.findViewById(R.id.tmp_tv_2);
+		View view = View.inflate(UIUtils.getContext(), R.layout.item_app_infor, null);
+
+		ViewUtils.inject(this, view);
 		
 		return view;
 	}
 	
-	public void refreshHolderView(String data)
+	public void refreshHolderView(AppInfoBean data)
 	{
-		mTvTmp1.setText("我是头: "+data);
-		mTvTmp2.setText("我是尾: "+data);
+		mIvIcon.setImageResource(R.drawable.ic_default);
+//		BitmapUtils bitmapUtils = new BitmapUtils(UIUtils.getContext());
+		String uri = Constants.URLS.IMAGEBASEURL+data.iconUrl;
+//		bitmapUtils.display(mIvIcon, uri);
+		BitmapHelp.display(mIvIcon, uri);
+		
+		mTvTitle.setText(data.name);
+		mRbStars.setRating(data.stars);
+		mTvSize.setText(StringUtils.formatFileSize(data.size));
+		mTvDes.setText(data.des);
 	}
 }

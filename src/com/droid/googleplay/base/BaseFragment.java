@@ -8,6 +8,9 @@
 
 package com.droid.googleplay.base;
 
+import java.util.List;
+import java.util.Map;
+
 import com.droid.googleplay.base.LoadingPager.LoadResult;
 import com.droid.googleplay.utils.UIUtils;
 
@@ -57,4 +60,30 @@ public abstract class BaseFragment extends Fragment
 	public abstract LoadResult initData();
 
 	public abstract View initSuccessView();
+	
+	public LoadResult checkState(Object obj)
+	{
+		if(obj==null)
+		{
+			return LoadResult.EMPTY;
+		}
+		
+		if(obj instanceof List)
+		{
+			if(((List) obj).size()==0)
+			{
+				return LoadResult.EMPTY;
+			}
+		}
+		
+		if(obj instanceof Map)
+		{
+			if(((Map) obj).size()==0)
+			{
+				return LoadResult.EMPTY;
+			}
+		}
+		
+		return LoadResult.SUCCESS;
+	}
 }

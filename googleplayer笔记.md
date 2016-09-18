@@ -333,4 +333,77 @@
 
 	public abstract BaseHolder getSpecialHolder();
 
-###23. 
+###23. xutil访问网络
+	HttpUtils httpUtils = new HttpUtils();
+	
+	String url = Constants.URLS.BASEURL + "home";
+	
+	RequestParams params = new RequestParams();
+	params.addQueryStringParameter("index", "0");
+	ResponseStream responseStream = httpUtils.sendSync(HttpMethod.GET, url, params);
+	String readString = responseStream.readString();
+
+###24. gson数据封装
+	Gson gson = new Gson();
+	HomeBean homeBean = gson.fromJson(readString, HomeBean.class); 
+
+###25. 访问网络结果的判断封装
+	public LoadResult checkState(Object obj)
+	{
+		if(obj==null)
+		{
+			return LoadResult.EMPTY;
+		}
+		
+		if(obj instanceof List)
+		{
+			if(((List) obj).size()==0)
+			{
+				return LoadResult.EMPTY;
+			}
+		}
+		
+		if(obj instanceof Map)
+		{
+			if(((Map) obj).size()==0)
+			{
+				return LoadResult.EMPTY;
+			}
+		}
+		
+		return LoadResult.SUCCESS;
+	}
+
+###26. homeholder初始化界面及设置数据 
+
+	xutil工具注入组件
+	BitmapUtils加载网络图片
+
+###27. 自定义ratingbar
+	<RatingBar
+		android:progressDrawable="@drawable/progress_ratingbar"
+        />
+	
+	<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+   	<!-- 背景 -->
+    <item 
+        android:id="@android:id/background"
+        android:drawable="@drawable/rating_small_empty"
+        >
+    </item>
+	<!-- 副进度 -->
+	<item 
+        android:id="@android:id/secondaryProgress"
+        android:drawable="@drawable/rating_small_half"
+        >
+    </item>
+	<!-- 主进度 -->
+    <item 
+        android:id="@android:id/progress"
+        android:drawable="@drawable/rating_small_full"
+        >
+    </item>
+	</layer-list>
+
+###28. 
+	
