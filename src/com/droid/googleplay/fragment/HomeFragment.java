@@ -1,5 +1,6 @@
 package com.droid.googleplay.fragment;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,11 +23,15 @@ import com.lidroid.xutils.http.ResponseStream;
 import com.lidroid.xutils.http.client.HttpRequest.HttpMethod;
 
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.SystemClock;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
 * @author yidong
@@ -106,23 +111,66 @@ public class HomeFragment extends BaseFragment
 
 		lv.setCacheColorHint(Color.TRANSPARENT);
 		lv.setFastScrollEnabled(true);
+		lv.setSelector(new ColorDrawable(Color.TRANSPARENT));
 		
-		lv.setAdapter(new HomeAdapter(mDatas));
+		lv.setAdapter(new HomeAdapter(lv,mDatas));
 		return lv;
 	}
 	
 	class HomeAdapter extends SuperBaseAdapter<AppInfoBean>
 	{
-
-		public HomeAdapter(List<AppInfoBean> dataSource)
+		public HomeAdapter(AbsListView absListView, List<AppInfoBean> dataSource)
 		{
-			super(dataSource);
+			super(absListView, dataSource);
 		}
 
 		@Override
 		public BaseHolder<AppInfoBean> getSpecialHolder()
 		{
 			return new HomeHolder();
+		}
+
+		@Override
+		public List<AppInfoBean> onLoadMore() throws Exception
+		{
+			SystemClock.sleep(2000);
+			return loadMore(mDatas.size());
+		}
+
+		private List<AppInfoBean> loadMore(int index) throws HttpException, IOException
+		{
+			HttpUtils httpUtils = new HttpUtils();
+			// http://localhost:8080/GooglePlayServer/home?index=0
+			String url = Constants.URLS.BASEURL + "home";
+			
+			RequestParams params = new RequestParams();
+			params.addQueryStringParameter("index", index+"");
+			ResponseStream responseStream = httpUtils.sendSync(HttpMethod.GET, url, params);
+			String readString = responseStream.readString();
+			System.out.println(readString);
+			
+			Gson gson = new Gson();
+			HomeBean homeBean = gson.fromJson(readString, HomeBean.class);
+			
+			if(homeBean==null)
+			{
+				return null;
+			}
+			
+			if(homeBean.list==null||homeBean.list.size()==0)
+			{
+				return null;
+			}
+			
+			return homeBean.list;
+		}
+		
+		@Override
+		public void onNormalItemClick(AdapterView<?> parent, View view, int position,
+				long id)
+		{
+			super.onNormalItemClick(parent, view, position, id);
+			Toast.makeText(UIUtils.getContext(), mDatas.get(position).packageName+"", 0).show();
 		}
 
 //		public View getView(int position, View convertView, ViewGroup parent)

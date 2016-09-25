@@ -405,5 +405,113 @@
     </item>
 	</layer-list>
 
-###28. 
+###28. loadmore
+	@Override
+	public int getViewTypeCount()
+	{
+		return super.getViewTypeCount() + 1;
+	}
+
+	@Override
+	public int getItemViewType(int position)
+	{
+		if (position == getCount() - 1)
+		{
+			return VIEWTYPE_LOADMORE;
+		}
+
+		return VIEWTYPE_NORMAL;
+	}
+
+	private void performLoadMore()
+	{
+		ThreadPoolFactory.getNormalPool().execute(new LoadMoreTask());
+	}
+
+	class LoadMoreTask implements Runnable
+	{
+		public void run()
+		{
+			List<T> loadMoreDatas = null;
+			int state = LoadMoreHolder.STATE_LOADING;
+			try
+			{
+				loadMoreDatas = onLoadMore();
+				if (loadMoreDatas == null)
+				{
+					state = LoadMoreHolder.STATE_NONE;
+				}
+				else
+				{
+					if (loadMoreDatas.size() < Constants.PAGESIZE)
+					{
+						state = LoadMoreHolder.STATE_NONE;
+					}
+					else
+					{
+						state = LoadMoreHolder.STATE_LOADING;
+					}
+				}
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+				state = LoadMoreHolder.STATE_RETRY;
+			}
+
+			final int tempState = state;
+			final List<T> tempLoadMoreDatas = loadMoreDatas;
+			UIUtils.postTaskSafely(new Runnable()
+			{
+				public void run()
+				{
+					// 刷新loadmore视图
+					mLoadMoreHolder.setDataAndRefreshHolderView(tempState);
+					// 刷新listview,返回loadmore加载后的数据mDataSource.addAll
+					if (tempLoadMoreDatas != null)
+					{
+						mDataSource.addAll(tempLoadMoreDatas);
+						notifyDataSetChanged();
+					}
+				}
+			});
+		}
+	}
+
+	public abstract List<T> onLoadMore() throws Exception;
 	
+	public boolean hasLoadMore()
+	{
+		return true;
+	}
+
+###29. fragment中loadmore实现
+	private List<AppInfoBean> loadMore(int index) throws HttpException, IOException
+	{
+		HttpUtils httpUtils = new HttpUtils();
+		// http://localhost:8080/GooglePlayServer/home?index=0
+		String url = Constants.URLS.BASEURL + "home";
+		
+		RequestParams params = new RequestParams();
+		params.addQueryStringParameter("index", index+"");
+		ResponseStream responseStream = httpUtils.sendSync(HttpMethod.GET, url, params);
+		String readString = responseStream.readString();
+		System.out.println(readString);
+		
+		Gson gson = new Gson();
+		HomeBean homeBean = gson.fromJson(readString, HomeBean.class);
+		
+		if(homeBean==null)
+		{
+			return null;
+		}
+		
+		if(homeBean.list==null||homeBean.list.size()==0)
+		{
+			return null;
+		}
+		
+		return homeBean.list;
+	}
+	
+###30.

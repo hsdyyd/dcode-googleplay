@@ -13,6 +13,7 @@ import com.droid.googleplay.utils.LogUtils;
 public class Constants
 {
 	public static final int DEBUGLEVEL = LogUtils.LEVEL_ALL;
+	public static final int PAGESIZE = 20;
 	
 	public static final class URLS
 	{
