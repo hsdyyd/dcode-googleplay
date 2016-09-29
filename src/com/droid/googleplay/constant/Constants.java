@@ -14,10 +14,12 @@ public class Constants
 {
 	public static final int DEBUGLEVEL = LogUtils.LEVEL_ALL;
 	public static final int PAGESIZE = 20;
+	public static final int TIMEOUT = 5 * 60 *1000;
+	
 	
 	public static final class URLS
 	{
-		public static final String BASEURL = "http://10.0.2.2:8080/GooglePlayServer/";
+		public static final String BASEURL = "http://10.0.3.2:8080/GooglePlayServer/";
 		public static final String IMAGEBASEURL = BASEURL+"image?name=";
 		
 	}

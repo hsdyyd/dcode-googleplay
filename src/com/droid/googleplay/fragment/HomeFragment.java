@@ -1,10 +1,6 @@
 package com.droid.googleplay.fragment;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.http.impl.cookie.BasicSecureHandler;
 
 import com.droid.googleplay.base.BaseFragment;
 import com.droid.googleplay.base.BaseHolder;
@@ -12,25 +8,16 @@ import com.droid.googleplay.base.LoadingPager.LoadResult;
 import com.droid.googleplay.base.SuperBaseAdapter;
 import com.droid.googleplay.bean.AppInfoBean;
 import com.droid.googleplay.bean.HomeBean;
-import com.droid.googleplay.constant.Constants;
 import com.droid.googleplay.holder.HomeHolder;
+import com.droid.googleplay.protocol.HomeProtocol;
 import com.droid.googleplay.utils.UIUtils;
-import com.google.gson.Gson;
-import com.lidroid.xutils.HttpUtils;
-import com.lidroid.xutils.exception.HttpException;
-import com.lidroid.xutils.http.RequestParams;
-import com.lidroid.xutils.http.ResponseStream;
-import com.lidroid.xutils.http.client.HttpRequest.HttpMethod;
 
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.os.SystemClock;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 /**
@@ -62,7 +49,7 @@ public class HomeFragment extends BaseFragment
 		// 访问网络
 		try
 		{
-			HttpUtils httpUtils = new HttpUtils();
+			/*HttpUtils httpUtils = new HttpUtils();
 			// http://localhost:8080/GooglePlayServer/home?index=0
 			String url = Constants.URLS.BASEURL + "home";
 			
@@ -73,7 +60,9 @@ public class HomeFragment extends BaseFragment
 			System.out.println(readString);
 			
 			Gson gson = new Gson();
-			HomeBean homeBean = gson.fromJson(readString, HomeBean.class);
+			HomeBean homeBean = gson.fromJson(readString, HomeBean.class);*/
+			HomeProtocol protocol = new HomeProtocol();
+			HomeBean homeBean = protocol.loadData(0);
 			
 			LoadResult state = checkState(homeBean);
 			if(state!=LoadResult.SUCCESS)
@@ -133,13 +122,14 @@ public class HomeFragment extends BaseFragment
 		@Override
 		public List<AppInfoBean> onLoadMore() throws Exception
 		{
-			SystemClock.sleep(2000);
+			// SystemClock.sleep(2000);
 			return loadMore(mDatas.size());
 		}
 
-		private List<AppInfoBean> loadMore(int index) throws HttpException, IOException
+		private List<AppInfoBean> loadMore(int index) throws Exception
 		{
-			HttpUtils httpUtils = new HttpUtils();
+			
+			/*HttpUtils httpUtils = new HttpUtils();
 			// http://localhost:8080/GooglePlayServer/home?index=0
 			String url = Constants.URLS.BASEURL + "home";
 			
@@ -150,7 +140,9 @@ public class HomeFragment extends BaseFragment
 			System.out.println(readString);
 			
 			Gson gson = new Gson();
-			HomeBean homeBean = gson.fromJson(readString, HomeBean.class);
+			HomeBean homeBean = gson.fromJson(readString, HomeBean.class);*/
+			HomeProtocol protocol = new HomeProtocol();
+			HomeBean homeBean = protocol.loadData(index);
 			
 			if(homeBean==null)
 			{

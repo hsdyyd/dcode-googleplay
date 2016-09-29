@@ -67,7 +67,7 @@ public abstract class SuperBaseAdapter<T> extends BaseAdapter
 
 	public View getView(int position, View convertView, ViewGroup parent)
 	{
-		BaseHolder holder;
+		BaseHolder holder = null;
 		if (convertView == null)
 		{
 			if (getItemViewType(position) == VIEWTYPE_LOADMORE)
