@@ -8,7 +8,8 @@ import com.droid.googleplay.base.LoadingPager.LoadResult;
 import com.droid.googleplay.base.SuperBaseAdapter;
 import com.droid.googleplay.bean.AppInfoBean;
 import com.droid.googleplay.bean.HomeBean;
-import com.droid.googleplay.holder.HomeHolder;
+import com.droid.googleplay.factory.ListViewFactory;
+import com.droid.googleplay.holder.AppItemHolder;
 import com.droid.googleplay.protocol.HomeProtocol;
 import com.droid.googleplay.utils.UIUtils;
 
@@ -96,11 +97,7 @@ public class HomeFragment extends BaseFragment
 //		TextView tv = new TextView(UIUtils.getContext());
 //		tv.setText(this.getClass().getSimpleName());
 		
-		ListView lv = new ListView(UIUtils.getContext());
-
-		lv.setCacheColorHint(Color.TRANSPARENT);
-		lv.setFastScrollEnabled(true);
-		lv.setSelector(new ColorDrawable(Color.TRANSPARENT));
+		ListView lv = ListViewFactory.createListView();
 		
 		lv.setAdapter(new HomeAdapter(lv,mDatas));
 		return lv;
@@ -116,7 +113,7 @@ public class HomeFragment extends BaseFragment
 		@Override
 		public BaseHolder<AppInfoBean> getSpecialHolder()
 		{
-			return new HomeHolder();
+			return new AppItemHolder();
 		}
 
 		@Override

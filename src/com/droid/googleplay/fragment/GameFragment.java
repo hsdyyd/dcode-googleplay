@@ -1,18 +1,22 @@
 package com.droid.googleplay.fragment;
 
-import java.util.Random;
+import java.util.List;
 
 import com.droid.googleplay.base.BaseFragment;
+import com.droid.googleplay.base.BaseHolder;
 import com.droid.googleplay.base.LoadingPager.LoadResult;
+import com.droid.googleplay.base.SuperBaseAdapter;
+import com.droid.googleplay.bean.AppInfoBean;
+import com.droid.googleplay.factory.ListViewFactory;
+import com.droid.googleplay.holder.AppItemHolder;
+import com.droid.googleplay.protocol.GameProtocol;
 import com.droid.googleplay.utils.UIUtils;
 
-import android.os.Bundle;
-import android.os.SystemClock;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.AbsListView;
+import android.widget.ListView;
 
 /**
 * @author yidong
@@ -23,22 +27,56 @@ import android.widget.TextView;
 public class GameFragment extends BaseFragment
 {
 
+	private List<AppInfoBean> mData;
+	private GameProtocol mGemeProtocol;
+
 	@Override
 	public LoadResult initData()
 	{
-		SystemClock.sleep(2000);
+		mGemeProtocol = new GameProtocol();
 		
-		LoadResult[] res = {LoadResult.SUCCESS,LoadResult.EMPTY,LoadResult.ERROR};
-		Random random = new Random();
-		int index = random.nextInt(res.length);
-		return res[index];
+		try
+		{
+			mData = mGemeProtocol.loadData(0);
+			
+			return checkState(mData);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			return LoadResult.ERROR;
+		}
+		
 	}
 
 	@Override
 	public View initSuccessView()
 	{
-		TextView tv = new TextView(UIUtils.getContext());
-		tv.setText(this.getClass().getSimpleName());
-		return tv;
+		ListView listView = ListViewFactory.createListView();
+		
+		listView.setAdapter(new GameAdapter(listView,mData));
+		
+		return listView;
+	}
+	
+	class GameAdapter extends SuperBaseAdapter<AppInfoBean>{
+
+		public GameAdapter(AbsListView absListView, List<AppInfoBean> dataSource)
+		{
+			super(absListView, dataSource);
+		}
+
+		@Override
+		public BaseHolder getSpecialHolder()
+		{
+			return new AppItemHolder();
+		}
+		
+		@Override
+		public List<AppInfoBean> onLoadMore() throws Exception
+		{
+			return mGemeProtocol.loadData(mData.size());
+		}
+		
 	}
 }

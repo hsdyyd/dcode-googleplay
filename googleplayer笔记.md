@@ -514,4 +514,18 @@
 		return homeBean.list;
 	}
 	
-###30.
+###30.app界面及game界面完成
+
+###31.listview工厂抽取
+	public static ListView createListView()
+	{
+		ListView listView = new ListView(UIUtils.getContext());
+
+		listView.setCacheColorHint(Color.TRANSPARENT);
+		listView.setSelector(new ColorDrawable(Color.TRANSPARENT));
+		listView.setFastScrollEnabled(true);
+
+		return listView;
+	}
+
+###32.

@@ -13,7 +13,7 @@ import java.util.List;
 
 import com.droid.googleplay.constant.Constants;
 import com.droid.googleplay.factory.ThreadPoolFactory;
-import com.droid.googleplay.holder.HomeHolder;
+import com.droid.googleplay.holder.AppItemHolder;
 import com.droid.googleplay.holder.LoadMoreHolder;
 import com.droid.googleplay.utils.UIUtils;
 import com.lidroid.xutils.view.annotation.event.OnItemClick;

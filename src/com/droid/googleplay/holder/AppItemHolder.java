@@ -24,7 +24,7 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-public class HomeHolder extends BaseHolder<AppInfoBean>
+public class AppItemHolder extends BaseHolder<AppInfoBean>
 {
 
 	@ViewInject(R.id.item_appinfo_iv_icon)
