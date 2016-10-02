@@ -15,6 +15,11 @@ public abstract class BaseHolder<T>
 	public View mViewHolder;
 	private T mData;
 	
+	public View getViewHolder()
+	{
+		return mViewHolder;
+	}
+
 	public BaseHolder()
 	{
 		mViewHolder = initHolderView();

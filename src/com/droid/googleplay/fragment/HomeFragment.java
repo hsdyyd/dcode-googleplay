@@ -10,11 +10,10 @@ import com.droid.googleplay.bean.AppInfoBean;
 import com.droid.googleplay.bean.HomeBean;
 import com.droid.googleplay.factory.ListViewFactory;
 import com.droid.googleplay.holder.AppItemHolder;
+import com.droid.googleplay.holder.PictureHolder;
 import com.droid.googleplay.protocol.HomeProtocol;
 import com.droid.googleplay.utils.UIUtils;
 
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
@@ -31,7 +30,7 @@ public class HomeFragment extends BaseFragment
 {
 
 	private List<AppInfoBean> mDatas;
-	private List<String> pictures;
+	private List<String> mPictures;
 
 	@Override
 	public LoadResult initData()
@@ -78,7 +77,7 @@ public class HomeFragment extends BaseFragment
 			}
 			
 			mDatas = homeBean.list;
-			pictures = homeBean.pictures;
+			mPictures = homeBean.picture;
 			
 			return LoadResult.SUCCESS;
 			
@@ -98,6 +97,13 @@ public class HomeFragment extends BaseFragment
 //		tv.setText(this.getClass().getSimpleName());
 		
 		ListView lv = ListViewFactory.createListView();
+		// 设置轮播图
+		PictureHolder pictureHolder = new PictureHolder();
+		
+		pictureHolder.setDataAndRefreshHolderView(mPictures);
+		View viewHolder = pictureHolder.getViewHolder();
+		
+		lv.addHeaderView(viewHolder);
 		
 		lv.setAdapter(new HomeAdapter(lv,mDatas));
 		return lv;

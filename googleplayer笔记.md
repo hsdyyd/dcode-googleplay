@@ -528,4 +528,27 @@
 		return listView;
 	}
 
-###32.
+###32.home界面实现广告轮播功能
+	ListView lv = ListViewFactory.createListView();
+	// 设置轮播图
+	PictureHolder pictureHolder = new PictureHolder();
+	
+	pictureHolder.setDataAndRefreshHolderView(mPictures);
+	View viewHolder = pictureHolder.getViewHolder();
+	
+	lv.addHeaderView(viewHolder);
+
+###33.viewpager嵌套在低版本中的问题
+* 自定义viewpager
+* 重写onTouchEvent
+
+		if(Math.abs(diffX)>Math.abs(diffY))
+		{
+			getParent().requestDisallowInterceptTouchEvent(true);
+		}
+		else
+		{
+			getParent().requestDisallowInterceptTouchEvent(false);
+		}
+				
+###34.

@@ -68,4 +68,22 @@ public class UIUtils
 			getMainHandler().post(task);
 		}
 	}
+
+	public static int dip2Px(int dip)
+	{
+		// px/dip = density;
+		float density = getResources().getDisplayMetrics().density;
+		
+		int px = (int)(density * dip + 0.5f);
+		return px;
+	}
+	
+	public static int px2Dip(int px)
+	{
+		// px/dip = density;
+		float density = getResources().getDisplayMetrics().density;
+		
+		int dip = (int)(density / px + 0.5f);
+		return dip;
+	}
 }
