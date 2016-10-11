@@ -20,6 +20,7 @@ import com.lidroid.xutils.view.annotation.ViewInject;
 
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -55,11 +56,56 @@ public class PictureHolder extends BaseHolder<List<String>>
 			
 			view.setBackgroundResource(R.drawable.indicator_normal);
 			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(UIUtils.dip2Px(5), UIUtils.dip2Px(5));
+			params.leftMargin = UIUtils.dip2Px(5);
+			params.bottomMargin = UIUtils.dip2Px(5);
 			
-			
+			view.setLayoutParams(params);  
+			 
 			mContainer.addView(view);
+			
+			if(i==0)
+			{
+				view.setBackgroundResource(R.drawable.indicator_selected);
+			}
 		}
+		
+		mViewPager.setOnPageChangeListener(new OnPageChangeListener()
+		{
+
+			public void onPageScrolled(int position, float positionOffset,
+					int positionOffsetPixels)
+			{
+			}
+
+			public void onPageSelected(int position)
+			{
+				position = position % mData.size();
+				for(int i=0;i<mData.size();i++)
+				{
+					View view = mContainer.getChildAt(i);
+					view.setBackgroundResource(R.drawable.indicator_normal);
+					
+					if(i==position)
+					{
+						view.setBackgroundResource(R.drawable.indicator_selected);
+					}
+				}
+				
+			}
+
+			public void onPageScrollStateChanged(int state)
+			{
+			}
+			
+		});
+		
+		
+		int current = Integer.MAX_VALUE/2;
+		int offset = current % mData.size();
+		mViewPager.setCurrentItem(current-offset);
 	}
+	
+	
 	
 	class PictureAdapter extends PagerAdapter
 	{
@@ -67,7 +113,7 @@ public class PictureHolder extends BaseHolder<List<String>>
 		@Override
 		public int getCount()
 		{
-			return mData.size();
+			return Integer.MAX_VALUE;
 		}
 
 		@Override
@@ -79,6 +125,7 @@ public class PictureHolder extends BaseHolder<List<String>>
 		@Override
 		public Object instantiateItem(ViewGroup container, int position)
 		{
+			position = position % mData.size();
 			ImageView iv = new ImageView(UIUtils.getContext());
 			
 			iv.setScaleType(ScaleType.FIT_XY);
