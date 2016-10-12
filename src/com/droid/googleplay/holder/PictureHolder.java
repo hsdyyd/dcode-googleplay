@@ -21,7 +21,9 @@ import com.lidroid.xutils.view.annotation.ViewInject;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
@@ -34,6 +36,7 @@ public class PictureHolder extends BaseHolder<List<String>>
 	@ViewInject(R.id.item_home_picture_container_indicator)
 	LinearLayout mContainer;
 	private List<String> mData;
+	private AutoScroll mAutoScroll;
 	
 	@Override
 	public View initHolderView()
@@ -103,9 +106,56 @@ public class PictureHolder extends BaseHolder<List<String>>
 		int current = Integer.MAX_VALUE/2;
 		int offset = current % mData.size();
 		mViewPager.setCurrentItem(current-offset);
+		
+		mAutoScroll = new AutoScroll();
+		mAutoScroll.start();
+		
+		mViewPager.setOnTouchListener(new OnTouchListener()
+		{
+			
+			public boolean onTouch(View v, MotionEvent event)
+			{
+				int action = event.getAction();
+				switch (action)
+				{
+					case MotionEvent.ACTION_DOWN:
+						mAutoScroll.stop();
+						break;
+					case MotionEvent.ACTION_MOVE:
+						
+						break;
+					case MotionEvent.ACTION_UP:
+						mAutoScroll.start();
+						break;
+					default:
+						break;
+				}
+				return false;
+			}
+		});
 	}
 	
-	
+	class AutoScroll implements  Runnable
+	{
+		public void start()
+		{
+			UIUtils.postTaskDelay(this, 2000);
+		}
+		
+		public void stop()
+		{
+			UIUtils.removeTask(this);
+		}
+		
+		public void run()
+		{
+			int position = mViewPager.getCurrentItem();
+			position++;
+			mViewPager.setCurrentItem(position);
+			
+			start();
+		}
+	}
 	
 	class PictureAdapter extends PagerAdapter
 	{

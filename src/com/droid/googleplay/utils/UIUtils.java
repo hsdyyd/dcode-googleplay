@@ -68,6 +68,16 @@ public class UIUtils
 			getMainHandler().post(task);
 		}
 	}
+	
+	public static void postTaskDelay(Runnable task,int delayTime)
+	{
+		getMainHandler().postDelayed(task, delayTime);
+	}
+	
+	public static void removeTask(Runnable task)
+	{
+		getMainHandler().removeCallbacks(task);
+	}
 
 	public static int dip2Px(int dip)
 	{
