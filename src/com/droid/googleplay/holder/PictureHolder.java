@@ -1,11 +1,3 @@
-/**
- * @auth yidong
- * @date 2016年10月2日下午8:55:28
- * @version v1.0
- * @desc
- *
- */
-
 package com.droid.googleplay.holder;
 
 import java.util.List;
@@ -29,13 +21,20 @@ import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 
+/**
+ * @auth yidong
+ * @date 2016年10月2日下午8:55:28
+ * @version v1.0
+ * @desc
+ *
+ */
 public class PictureHolder extends BaseHolder<List<String>>
 {
 	@ViewInject(R.id.item_home_picture_pager)
 	ViewPager mViewPager;
 	@ViewInject(R.id.item_home_picture_container_indicator)
 	LinearLayout mContainer;
-	private List<String> mData;
+	private List<String> mData;     
 	private AutoScroll mAutoScroll;
 	
 	@Override

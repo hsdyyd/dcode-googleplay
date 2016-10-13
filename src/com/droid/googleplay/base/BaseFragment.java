@@ -52,7 +52,9 @@ public abstract class BaseFragment extends Fragment
 		}
 		else
 		{
-			((ViewGroup)mLoadingPager.getParent()).removeView(mLoadingPager);
+			if(mLoadingPager.getParent()!=null){
+				((ViewGroup)mLoadingPager.getParent()).removeView(mLoadingPager);
+			}
 		}
 		return mLoadingPager;
 	}
