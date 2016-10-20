@@ -1,6 +1,9 @@
 package com.droid.googleplay.view;
 
+import com.droid.googleplay.R;
+
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
 
@@ -12,15 +15,27 @@ import android.widget.FrameLayout;
  */
 public class RatioLayout extends FrameLayout
 {
-	private float mPicRation = 2.43f;  // 图片显示的宽高比
+	private float mPicRation ;//= 2.43f;  // 图片显示的宽高比
+	
+	private static final int RELATIVE_WIDTH = 0;
+	private static final int RELATIVE_HEIGHT = 1;
+	private int mRelative = RELATIVE_WIDTH;
+	
 	public RatioLayout(Context context)
 	{
-		super(context);
+		super(context,null);
 	}
 
 	public RatioLayout(Context context, AttributeSet attrs)
 	{
 		super(context, attrs);
+		TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.RatioLayout);
+		
+		mPicRation = typedArray.getFloat(R.styleable.RatioLayout_picRation, 0);
+		
+		mRelative = typedArray.getInt(R.styleable.RatioLayout_relative,RELATIVE_WIDTH);
+		
+		typedArray.recycle();
 	}
 
 	// onlayout   ondraw
@@ -30,7 +45,7 @@ public class RatioLayout extends FrameLayout
 		// 获取父容器的宽的模式
 		int parentWidthMode = MeasureSpec.getMode(widthMeasureSpec);
 		int parentHeightMode = MeasureSpec.getMode(heightMeasureSpec);
-		if(parentWidthMode == MeasureSpec.EXACTLY && mPicRation!=0)
+		if(parentWidthMode == MeasureSpec.EXACTLY && mPicRation!=0 && mRelative==RELATIVE_WIDTH)
 		{
 			int parentWidth = MeasureSpec.getSize(widthMeasureSpec);
 			
@@ -52,7 +67,7 @@ public class RatioLayout extends FrameLayout
 			// 设置自己的测绘结果
 			setMeasuredDimension(parentWidth, parentHeight);
 		}
-		else if(parentHeightMode == MeasureSpec.EXACTLY && mPicRation!=0)
+		else if(parentHeightMode == MeasureSpec.EXACTLY && mPicRation!=0 && mRelative==RELATIVE_HEIGHT)
 		{
 			int parentHeight = MeasureSpec.getSize(heightMeasureSpec);
 			
