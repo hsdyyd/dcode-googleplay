@@ -76,7 +76,7 @@ public abstract class SuperBaseAdapter<T> extends BaseAdapter
 			}
 			else
 			{
-				holder = getSpecialHolder();
+				holder = getSpecialHolder(position);
 			}
 		}
 		else
@@ -106,7 +106,7 @@ public abstract class SuperBaseAdapter<T> extends BaseAdapter
 		return holder.mViewHolder;
 	}
 
-	public abstract BaseHolder getSpecialHolder();
+	public abstract BaseHolder getSpecialHolder(int position);
 
 	@Override
 	public int getViewTypeCount()

@@ -67,7 +67,7 @@ public class GameFragment extends BaseFragment
 		}
 
 		@Override
-		public BaseHolder getSpecialHolder()
+		public BaseHolder getSpecialHolder(int position)
 		{
 			return new AppItemHolder();
 		}
