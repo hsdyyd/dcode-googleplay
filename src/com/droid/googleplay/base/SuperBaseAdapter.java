@@ -121,7 +121,17 @@ public abstract class SuperBaseAdapter<T> extends BaseAdapter
 		{
 			return VIEWTYPE_LOADMORE;
 		}
+		
+		return getNormalViewType(position);
+	}
 
+	/**
+	 * 子类可以重写这个方法，添加更多的类型
+	 * @param position
+	 * @return
+	 */
+	public int getNormalViewType(int position)
+	{
 		return VIEWTYPE_NORMAL;
 	}
 

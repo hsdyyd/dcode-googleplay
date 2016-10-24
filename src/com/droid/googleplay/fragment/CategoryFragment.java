@@ -73,6 +73,27 @@ public class CategoryFragment extends BaseFragment
 			{
 				return new ItemCategoryHolder();
 			}
+		}
+		
+		@Override
+		public int getViewTypeCount()
+		{
+			return super.getViewTypeCount()+1;
+		}
+		
+		// 解决listview中存在多种view复用的问题
+		@Override
+		public int getNormalViewType(int position)
+		{
+			CategoryInfoBean infoBean = mData.get(position);
+			if(infoBean.isTitle)
+			{
+				return super.getNormalViewType(position)+1;
+			}
+			else
+			{
+				return super.getNormalViewType(position);	
+			}
 			
 		}
 		

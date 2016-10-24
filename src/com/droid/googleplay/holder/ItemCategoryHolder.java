@@ -8,16 +8,22 @@
 
 package com.droid.googleplay.holder;
 
+import java.lang.annotation.Annotation;
+
 import com.droid.googleplay.R;
 import com.droid.googleplay.base.BaseHolder;
 import com.droid.googleplay.bean.CategoryInfoBean;
 import com.droid.googleplay.constant.Constants;
 import com.droid.googleplay.utils.BitmapHelp;
+import com.droid.googleplay.utils.StringUtils;
 import com.droid.googleplay.utils.UIUtils;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
+import com.lidroid.xutils.view.annotation.event.OnClick;
 
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -56,17 +62,33 @@ public class ItemCategoryHolder extends BaseHolder<CategoryInfoBean>
 	@Override
 	public void refreshHolderView(CategoryInfoBean data)
 	{
-		mTvName1.setText(data.name1);
-		mTvName2.setText(data.name2);
-		mTvName3.setText(data.name3);
-		
-		mIvIcon1.setImageResource(R.drawable.ic_default);
-		BitmapHelp.display(mIvIcon1, Constants.URLS.IMAGEBASEURL+data.url1);
-		mIvIcon2.setImageResource(R.drawable.ic_default);
-		BitmapHelp.display(mIvIcon2, Constants.URLS.IMAGEBASEURL+data.url2);
-		mIvIcon3.setImageResource(R.drawable.ic_default);
-		BitmapHelp.display(mIvIcon3, Constants.URLS.IMAGEBASEURL+data.url3);
-		
+		setData(data.name1,data.url1,mTvName1,mIvIcon1);
+		setData(data.name2,data.url2,mTvName2,mIvIcon2);
+		setData(data.name3,data.url3,mTvName3,mIvIcon3);
+	}
+
+	private void setData(String name,String url,TextView tv,ImageView iv)
+	{
+		if(!StringUtils.isEmpty(name)&&!StringUtils.isEmpty(url))
+		{
+			tv.setText(name);
+			iv.setImageResource(R.drawable.ic_default);
+			BitmapHelp.display(iv, Constants.URLS.IMAGEBASEURL+url);
+			((ViewGroup)tv.getParent()).setVisibility(View.VISIBLE);
+			
+			((ViewGroup)tv.getParent()).setOnClickListener(new OnClickListener()
+			{
+				@Override
+				public void onClick(View v)
+				{
+					
+				}
+			});
+		}
+		else
+		{
+			((ViewGroup)tv.getParent()).setVisibility(View.INVISIBLE);
+		}
 	}
 
 }
