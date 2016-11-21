@@ -7,6 +7,8 @@ import com.droid.googleplay.base.BaseFragment;
 import com.droid.googleplay.base.LoadingPager.LoadResult;
 import com.droid.googleplay.protocol.RecommendProtocol;
 import com.droid.googleplay.utils.UIUtils;
+import com.droid.googleplay.view.flyinout.ShakeListener;
+import com.droid.googleplay.view.flyinout.ShakeListener.OnShakeListener;
 import com.droid.googleplay.view.flyinout.StellarMap;
 
 import android.graphics.Color;
@@ -48,15 +50,37 @@ public class RecommendFragment extends BaseFragment
 	@Override
 	public View initSuccessView()
 	{
-		StellarMap stellar = new StellarMap(UIUtils.getContext());
-		stellar.setAdapter(new RecommendAdapter());
+		final StellarMap stellar = new StellarMap(UIUtils.getContext());
+		final RecommendAdapter adapter = new RecommendAdapter();
+		stellar.setAdapter(adapter);
 		
 		// 设置第一页可见 
 		stellar.setGroup(0, true);
 		// 设置屏幕分为多少格子
 		stellar.setRegularity(15, 20);
-		int padding = UIUtils.dip2Px(5);
-		stellar.setPadding(padding, padding, padding, padding);
+		
+		// 加入摇一摇
+		ShakeListener shake = new ShakeListener(UIUtils.getContext());
+		
+		shake.setOnShakeListener(new OnShakeListener()
+		{
+			@Override
+			public void onShake()
+			{
+				
+				int groupIndex = stellar.getCurrentGroup();
+				if(groupIndex==adapter.getGroupCount()-1)
+				{
+					groupIndex = 0;
+				}
+				else
+				{
+					groupIndex++;
+				}
+				stellar.setGroup(groupIndex , true);
+			}
+		});
+		
 		return stellar;
 	}
 	
@@ -110,6 +134,8 @@ public class RecommendFragment extends BaseFragment
 			
 			tv.setTextColor(argb);
 			
+			int padding = UIUtils.dip2Px(5);
+			tv.setPadding(padding, padding, padding, padding);
 			return tv;
 		}
 
