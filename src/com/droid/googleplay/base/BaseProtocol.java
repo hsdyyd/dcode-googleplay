@@ -23,6 +23,8 @@ import com.lidroid.xutils.http.RequestParams;
 import com.lidroid.xutils.http.ResponseStream;
 import com.lidroid.xutils.http.client.HttpRequest.HttpMethod;
 
+import android.util.Log;
+
 public abstract class BaseProtocol<T>
 {
 	public T loadData(int index) throws Exception
@@ -74,7 +76,20 @@ public abstract class BaseProtocol<T>
 	private File getCacheFile(int index)
 	{
 		String localPath = FileUtils.getDir("json");
-		String name = getIntefaceKey() + "." + index;
+		
+		Map<String, String> extraParams = getExtraParams();
+		String name = null;
+		
+		if(extraParams==null){
+			name = getIntefaceKey() + "." + index;
+		}else{
+			for (Map.Entry<String, String> info : extraParams.entrySet())
+			{
+				String packageName = info.getValue();
+				name = getIntefaceKey() + "." + packageName;
+			}
+		}
+		
 		File cacheFile = new File(localPath, name);
 		return cacheFile;
 	}
@@ -91,11 +106,15 @@ public abstract class BaseProtocol<T>
 		String url = Constants.URLS.BASEURL + getIntefaceKey();
 
 		RequestParams params = new RequestParams();
+		
+		Map<String, String> extraParams = getExtraParams();
 		// 处理额外参数
-		if(getExtraParams()==null){
+		if(extraParams==null){
 			params.addQueryStringParameter("index", index + "");
+			Log.i("LOG", "==========================index");
 		}else{
-			for (Map.Entry<String, String> info : getExtraParams().entrySet())
+			Log.i("LOG", "==========================extra");
+			for (Map.Entry<String, String> info : extraParams.entrySet())
 			{
 				String name = info.getKey();
 				String value = info.getValue();

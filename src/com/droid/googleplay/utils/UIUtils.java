@@ -30,6 +30,11 @@ public class UIUtils
 	{
 		return getResources().getString(resId);
 	}
+	
+	public static String getString(int id, Object... formatArgs)
+	{
+		return getResources().getString(id, formatArgs);
+	}
 
 	public static String[] getStringArray(int resId)
 	{

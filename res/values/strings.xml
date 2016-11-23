@@ -16,4 +16,9 @@
 	</string-array>
 	<string name="open">open</string>
 	<string name="close">close</string>
+	
+	<string name="detail_downloadnum">下载:%1$s</string>
+	<string name="detail_version">版本:%1$s</string>
+    <string name="detail_date">时间:%1$s</string>
+    <string name="detail_size">大小:%1$s</string>
 </resources>

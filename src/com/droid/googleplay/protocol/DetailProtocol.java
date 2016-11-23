@@ -8,6 +8,8 @@ import com.droid.googleplay.bean.AppInfoBean;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import android.util.Log;
+
 /**
 * @author yidong
 * @date 2016年11月23日 上午9:18:23
@@ -39,6 +41,7 @@ public class DetailProtocol extends BaseProtocol<AppInfoBean>
 	@Override
 	public Map<String, String> getExtraParams()
 	{
+		Log.i("LOG", "********************>"+mPackageName);
 		Map<String,String> params = new HashMap<String,String>();
 		params.put("packageName", mPackageName);
 		return params;

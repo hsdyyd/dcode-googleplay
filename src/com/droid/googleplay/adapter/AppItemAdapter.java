@@ -10,6 +10,7 @@ import com.droid.googleplay.holder.AppItemHolder;
 import com.droid.googleplay.utils.UIUtils;
 
 import android.content.Intent;
+import android.util.Log;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
@@ -33,7 +34,6 @@ public class AppItemAdapter extends SuperBaseAdapter<AppInfoBean>
 		return new AppItemHolder();
 	}
 
-
 	@Override
 	public void onNormalItemClick(AdapterView<?> parent, View view, int position,
 			long id)
@@ -46,6 +46,9 @@ public class AppItemAdapter extends SuperBaseAdapter<AppInfoBean>
 	{
 		Intent intent = new Intent(UIUtils.getContext(),DetailActivity.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		
+		Log.i("LOG", "================>"+mDataSource.get(position).packageName);
+		
 		intent.putExtra("packageName", mDataSource.get(position).packageName);
 		
 		UIUtils.getContext().startActivity(intent);

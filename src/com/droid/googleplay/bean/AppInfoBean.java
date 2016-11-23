@@ -29,7 +29,7 @@ public class AppInfoBean
 	
 	public List<String> screen;
 	public List<DetailSafe> safe;
-	class DetailSafe{
+	public class DetailSafe{
 		public String safeDes;
 		public int safeDesColor;
 		public String safeDesUrl;
