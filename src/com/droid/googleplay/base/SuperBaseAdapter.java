@@ -25,6 +25,7 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
+import android.widget.ListView;
 
 public abstract class SuperBaseAdapter<T> extends BaseAdapter
 		implements OnItemClickListener
@@ -34,12 +35,14 @@ public abstract class SuperBaseAdapter<T> extends BaseAdapter
 	private static final int VIEWTYPE_NORMAL = 1;
 	private LoadMoreHolder mLoadMoreHolder;
 	private LoadMoreTask mLoadMoreTask;
+	private AbsListView mAbsListView;
 
 	public SuperBaseAdapter(AbsListView absListView, List<T> dataSource)
 	{
 		super();
 		absListView.setOnItemClickListener(this);
 		mDataSource = dataSource;
+		mAbsListView = absListView;
 	}
 
 	public int getCount()
@@ -220,6 +223,11 @@ public abstract class SuperBaseAdapter<T> extends BaseAdapter
 	// 处理listview条目被点击的事件(加载更多及listview普通条目的点击事件)
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id)
 	{
+		if(mAbsListView instanceof ListView)
+		{
+			position = position - ((ListView)mAbsListView).getHeaderViewsCount();
+		}
+		
 		if (getItemViewType(position) == VIEWTYPE_LOADMORE)
 		{
 			performLoadMore();

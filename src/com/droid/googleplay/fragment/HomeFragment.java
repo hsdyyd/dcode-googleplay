@@ -2,6 +2,7 @@ package com.droid.googleplay.fragment;
 
 import java.util.List;
 
+import com.droid.googleplay.adapter.AppItemAdapter;
 import com.droid.googleplay.base.BaseFragment;
 import com.droid.googleplay.base.BaseHolder;
 import com.droid.googleplay.base.LoadingPager.LoadResult;
@@ -109,7 +110,38 @@ public class HomeFragment extends BaseFragment
 		return lv;
 	}
 	
-	class HomeAdapter extends SuperBaseAdapter<AppInfoBean>
+	private List<AppInfoBean> loadMore(int index) throws Exception
+	{
+		
+		/*HttpUtils httpUtils = new HttpUtils();
+		// http://localhost:8080/GooglePlayServer/home?index=0
+		String url = Constants.URLS.BASEURL + "home";
+		
+		RequestParams params = new RequestParams();
+		params.addQueryStringParameter("index", index+"");
+		ResponseStream responseStream = httpUtils.sendSync(HttpMethod.GET, url, params);
+		String readString = responseStream.readString();
+		System.out.println(readString);
+		
+		Gson gson = new Gson();
+		HomeBean homeBean = gson.fromJson(readString, HomeBean.class);*/
+		HomeProtocol protocol = new HomeProtocol();
+		HomeBean homeBean = protocol.loadData(index);
+		
+		if(homeBean==null)
+		{
+			return null;
+		}
+		
+		if(homeBean.list==null||homeBean.list.size()==0)
+		{
+			return null;
+		}
+		
+		return homeBean.list;
+	}
+	
+	class HomeAdapter extends AppItemAdapter
 	{
 		public HomeAdapter(AbsListView absListView, List<AppInfoBean> dataSource)
 		{
@@ -117,56 +149,11 @@ public class HomeFragment extends BaseFragment
 		}
 
 		@Override
-		public BaseHolder<AppInfoBean> getSpecialHolder(int position)
-		{
-			return new AppItemHolder();
-		}
-
-		@Override
 		public List<AppInfoBean> onLoadMore() throws Exception
 		{
-			// SystemClock.sleep(2000);
 			return loadMore(mDatas.size());
 		}
 
-		private List<AppInfoBean> loadMore(int index) throws Exception
-		{
-			
-			/*HttpUtils httpUtils = new HttpUtils();
-			// http://localhost:8080/GooglePlayServer/home?index=0
-			String url = Constants.URLS.BASEURL + "home";
-			
-			RequestParams params = new RequestParams();
-			params.addQueryStringParameter("index", index+"");
-			ResponseStream responseStream = httpUtils.sendSync(HttpMethod.GET, url, params);
-			String readString = responseStream.readString();
-			System.out.println(readString);
-			
-			Gson gson = new Gson();
-			HomeBean homeBean = gson.fromJson(readString, HomeBean.class);*/
-			HomeProtocol protocol = new HomeProtocol();
-			HomeBean homeBean = protocol.loadData(index);
-			
-			if(homeBean==null)
-			{
-				return null;
-			}
-			
-			if(homeBean.list==null||homeBean.list.size()==0)
-			{
-				return null;
-			}
-			
-			return homeBean.list;
-		}
-		
-		@Override
-		public void onNormalItemClick(AdapterView<?> parent, View view, int position,
-				long id)
-		{
-			super.onNormalItemClick(parent, view, position, id);
-			Toast.makeText(UIUtils.getContext(), mDatas.get(position).packageName+"", 0).show();
-		}
 
 //		public View getView(int position, View convertView, ViewGroup parent)
 //		{

@@ -13,6 +13,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.util.Map;
 
 import com.droid.googleplay.constant.Constants;
 import com.droid.googleplay.utils.FileUtils;
@@ -77,6 +78,11 @@ public abstract class BaseProtocol<T>
 		File cacheFile = new File(localPath, name);
 		return cacheFile;
 	}
+	
+	public Map<String,String> getExtraParams()
+	{
+		return null;
+	}
 
 	private String getDataFromNet(int index) throws Exception
 	{
@@ -85,7 +91,17 @@ public abstract class BaseProtocol<T>
 		String url = Constants.URLS.BASEURL + getIntefaceKey();
 
 		RequestParams params = new RequestParams();
-		params.addQueryStringParameter("index", index + "");
+		// 处理额外参数
+		if(getExtraParams()==null){
+			params.addQueryStringParameter("index", index + "");
+		}else{
+			for (Map.Entry<String, String> info : getExtraParams().entrySet())
+			{
+				String name = info.getKey();
+				String value = info.getValue();
+				params.addQueryStringParameter(name,value);
+			}
+		}
 		ResponseStream responseStream = httpUtils.sendSync(HttpMethod.GET, url, params);
 		String readString = responseStream.readString();
 		

@@ -2,18 +2,15 @@ package com.droid.googleplay.fragment;
 
 import java.util.List;
 
+import com.droid.googleplay.adapter.AppItemAdapter;
 import com.droid.googleplay.base.BaseFragment;
 import com.droid.googleplay.base.BaseHolder;
 import com.droid.googleplay.base.LoadingPager.LoadResult;
-import com.droid.googleplay.base.SuperBaseAdapter;
 import com.droid.googleplay.bean.AppInfoBean;
 import com.droid.googleplay.factory.ListViewFactory;
 import com.droid.googleplay.holder.AppItemHolder;
 import com.droid.googleplay.protocol.GameProtocol;
-import com.droid.googleplay.utils.UIUtils;
 
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ListView;
@@ -59,17 +56,11 @@ public class GameFragment extends BaseFragment
 		return listView;
 	}
 	
-	class GameAdapter extends SuperBaseAdapter<AppInfoBean>{
+	class GameAdapter extends AppItemAdapter{
 
 		public GameAdapter(AbsListView absListView, List<AppInfoBean> dataSource)
 		{
 			super(absListView, dataSource);
-		}
-
-		@Override
-		public BaseHolder getSpecialHolder(int position)
-		{
-			return new AppItemHolder();
 		}
 		
 		@Override

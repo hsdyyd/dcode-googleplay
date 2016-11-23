@@ -2,6 +2,7 @@ package com.droid.googleplay.fragment;
 
 import java.util.List;
 
+import com.droid.googleplay.adapter.AppItemAdapter;
 import com.droid.googleplay.base.BaseFragment;
 import com.droid.googleplay.base.BaseHolder;
 import com.droid.googleplay.base.LoadingPager.LoadResult;
@@ -59,7 +60,7 @@ public class AppFragment extends BaseFragment
 		return listView;
 	}
 	
-	class AppAdapter extends SuperBaseAdapter<AppInfoBean>
+	class AppAdapter extends AppItemAdapter
 	{
 
 		public AppAdapter(AbsListView absListView, List<AppInfoBean> dataSource)
@@ -67,12 +68,6 @@ public class AppFragment extends BaseFragment
 			super(absListView, dataSource);
 		}
 
-		@Override
-		public BaseHolder getSpecialHolder(int position)
-		{
-			return new AppItemHolder();
-		}
-		
 		@Override
 		public List<AppInfoBean> onLoadMore() throws Exception
 		{
