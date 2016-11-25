@@ -1,6 +1,7 @@
 package com.droid.googleplay.activity;
 
 import com.droid.googleplay.R;
+import com.droid.googleplay.base.BaseActivity;
 import com.droid.googleplay.base.LoadingPager;
 import com.droid.googleplay.base.LoadingPager.LoadResult;
 import com.droid.googleplay.bean.AppInfoBean;
@@ -14,9 +15,11 @@ import com.droid.googleplay.utils.UIUtils;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -27,7 +30,7 @@ import android.widget.TextView;
 * @version 1.0
 * @Description 
 */
-public class DetailActivity extends Activity
+public class DetailActivity extends BaseActivity
 {
 	private String mPackageName;
 	private AppInfoBean mData;
@@ -46,15 +49,28 @@ public class DetailActivity extends Activity
 	
 	@ViewInject(R.id.app_detail_safe)
 	FrameLayout mContainerSafe;
-
-	@Override
-	protected void onCreate(Bundle savedInstanceState)
+	private LoadingPager mLoadingPager;
+//	@Override
+//	protected void onCreate(Bundle savedInstanceState)
+//	{
+//		super.onCreate(savedInstanceState);
+//		
+//		init();
+//		initView();
+//		initActionBar();
+//		initData();
+//	}
+	
+	public void init()
 	{
-		super.onCreate(savedInstanceState);
-		
-		init();
-		
-		LoadingPager loadingPager = new LoadingPager(UIUtils.getContext()){
+		mPackageName = getIntent().getStringExtra("packageName");
+		Log.i("LOG", "------------------------>"+mPackageName);
+	}
+	
+
+	public void initView()
+	{
+		mLoadingPager = new LoadingPager(UIUtils.getContext()){
 
 			@Override
 			public LoadResult initData()
@@ -69,17 +85,34 @@ public class DetailActivity extends Activity
 			}
 		};
 		
-		loadingPager.loadData();
-		
-		
-		setContentView(loadingPager);
-		
+		setContentView(mLoadingPager);
 	}
 	
-	private void init()
+	public void initActionBar()
 	{
-		mPackageName = getIntent().getStringExtra("packageName");
-		Log.i("LOG", "------------------------>"+mPackageName);
+		ActionBar actionBar = getSupportActionBar();
+		actionBar.setTitle("GooglePlay");
+		actionBar.setDisplayHomeAsUpEnabled(true);
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		switch (item.getItemId())
+		{
+			case android.R.id.home:
+				finish();
+				break;
+	
+			default:
+				break;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
+	public void initData()
+	{
+		mLoadingPager.loadData();
 	}
 	
 	private LoadResult onInitData()

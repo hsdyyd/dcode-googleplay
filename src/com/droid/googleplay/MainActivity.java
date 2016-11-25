@@ -1,12 +1,12 @@
 package com.droid.googleplay;
 
 import com.astuetz.PagerSlidingTabStripExtends;
+import com.droid.googleplay.base.BaseActivity;
 import com.droid.googleplay.base.BaseFragment;
 import com.droid.googleplay.base.LoadingPager;
 import com.droid.googleplay.factory.FragmentFactory;
 import com.droid.googleplay.utils.UIUtils;
 
-import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -17,7 +17,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,7 +27,7 @@ import android.widget.TextView;
  * @author dongyi 使用ActionBar时Activity继承自ActionBarActivity,需要引入v7包
  *         修改主题:@style/Theme.AppComp.xxx
  */
-public class MainActivity extends ActionBarActivity
+public class MainActivity extends BaseActivity
 {
 	private ActionBar					mActionBar;
 	private PagerSlidingTabStripExtends	mTabs;
@@ -41,32 +40,34 @@ public class MainActivity extends ActionBarActivity
 	private DrawerLayout mDrawerLayout;
 	private ActionBarDrawerToggle mToggle;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState)
-	{
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
-
-		// mActionBar = getSupportActionBar();
-		// mActionBar.setTitle("GooglePlay");
-		// mActionBar.setSubtitle("good app");
-		// mActionBar.setIcon(R.drawable.ic_launcher);
-		// mActionBar.setDisplayShowTitleEnabled(true);
-		// mActionBar.setDisplayShowHomeEnabled(true);
-		// mActionBar.setDisplayHomeAsUpEnabled(true);
-
-		initView();
-		initActionBar();
-		initActionBarToggle();
-		initData();
-		initListener();
-		
-	}
+//	@Override
+//	protected void onCreate(Bundle savedInstanceState)
+//	{
+//		super.onCreate(savedInstanceState);
+//		setContentView(R.layout.activity_main);
+//
+//		// mActionBar = getSupportActionBar();
+//		// mActionBar.setTitle("GooglePlay");
+//		// mActionBar.setSubtitle("good app");
+//		// mActionBar.setIcon(R.drawable.ic_launcher);
+//		// mActionBar.setDisplayShowTitleEnabled(true);
+//		// mActionBar.setDisplayShowHomeEnabled(true);
+//		// mActionBar.setDisplayHomeAsUpEnabled(true);
+//
+//		initView();
+//		initActionBar();
+//		initActionBarToggle();
+//		initData();
+//		initListener();
+//		
+//	}
 
 
 	/** 初始化view **/
-	private void initView()
+	@Override
+	public void initView()
 	{
+		setContentView(R.layout.activity_main);
 		mTabs = (PagerSlidingTabStripExtends) findViewById(R.id.main_tabs);
 		mViewPager = (ViewPager) findViewById(R.id.main_viewpager);
 		
@@ -74,7 +75,8 @@ public class MainActivity extends ActionBarActivity
 	}
 
 	/** 初始化ActionBar **/
-	private void initActionBar()
+	@Override
+	public void initActionBar()
 	{
 		mActionBar = getSupportActionBar();
 		mActionBar.setTitle("GooglePlay");
@@ -82,9 +84,11 @@ public class MainActivity extends ActionBarActivity
 		mActionBar.setDisplayShowTitleEnabled(true);
 		mActionBar.setDisplayShowHomeEnabled(true);
 		mActionBar.setDisplayHomeAsUpEnabled(true);
+		
+		initActionBarToggle();
 	}
 
-	private void initActionBarToggle()
+	public void initActionBarToggle()
 	{
 		mToggle = new ActionBarDrawerToggle(MainActivity.this, 
 																 mDrawerLayout, 
@@ -99,7 +103,8 @@ public class MainActivity extends ActionBarActivity
 	
 	
 	/** 初始化数据 **/
-	private void initData()
+	@Override
+	public void initData()
 	{
 		mMainTitles = UIUtils.getStringArray(R.array.main_title);
 		
@@ -112,7 +117,8 @@ public class MainActivity extends ActionBarActivity
 		mTabs.setViewPager(mViewPager);
 	}
 
-	private void initListener()
+	@Override
+	public void initListener()
 	{
 		mTabs.setOnPageChangeListener(new OnPageChangeListener()
 		{
