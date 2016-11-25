@@ -11,6 +11,7 @@ import com.droid.googleplay.utils.BitmapHelp;
 import com.droid.googleplay.utils.UIUtils;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
+import com.nineoldandroids.animation.ObjectAnimator;
 import com.nineoldandroids.animation.ValueAnimator;
 import com.nineoldandroids.animation.ValueAnimator.AnimatorUpdateListener;
 
@@ -77,15 +78,17 @@ public class AppDetailSafeHolder extends BaseHolder<AppInfoBean> implements OnCl
 			
 			mContainerDes.addView(ll);
 		}
+		
+		toggle(false);
 	}
 
 	@Override
 	public void onClick(View v)
 	{
-		toggle();
+		toggle(true);
 	}
 
-	private void toggle()
+	private void toggle(boolean isAnimation)
 	{
 		if(isOpen) // 折叠
 		{
@@ -93,8 +96,13 @@ public class AppDetailSafeHolder extends BaseHolder<AppInfoBean> implements OnCl
 			int measuredHeight = mContainerDes.getMeasuredHeight();
 			int start = measuredHeight;
 			int end = 0;
-			
-			toAnimator(start, end);
+			if(isAnimation){
+				toAnimator(start, end);
+			}else{
+				LayoutParams params = mContainerDes.getLayoutParams();
+				params.height = end;
+				mContainerDes.setLayoutParams(params );
+			}
 		}
 		else  // 展开
 		{
@@ -103,7 +111,25 @@ public class AppDetailSafeHolder extends BaseHolder<AppInfoBean> implements OnCl
 			int start = 0;
 			int end = measuredHeight;
 			
-			toAnimator(start, end);
+			if(isAnimation){
+				toAnimator(start, end);
+			}else{
+				LayoutParams params = mContainerDes.getLayoutParams();
+				params.height = end;
+				mContainerDes.setLayoutParams(params );
+			}
+		}
+		
+		if(isAnimation)
+		{
+			if(isOpen)
+			{
+				ObjectAnimator.ofFloat(mIvArrow, "rotation", 180,0).start();
+			}
+			else
+			{
+				ObjectAnimator.ofFloat(mIvArrow, "rotation", 0,180).start();
+			}
 		}
 		
 		isOpen = !isOpen;

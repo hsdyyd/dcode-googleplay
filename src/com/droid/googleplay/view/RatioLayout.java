@@ -17,10 +17,20 @@ public class RatioLayout extends FrameLayout
 {
 	private float mPicRation ;//= 2.43f;  // 图片显示的宽高比
 	
-	private static final int RELATIVE_WIDTH = 0;
-	private static final int RELATIVE_HEIGHT = 1;
+	public static final int RELATIVE_WIDTH = 0;
+	public static final int RELATIVE_HEIGHT = 1;
 	private int mRelative = RELATIVE_WIDTH;
 	
+	public void setPicRation(float picRation)
+	{
+		mPicRation = picRation;
+	}
+
+	public void setRelative(int relative)
+	{
+		mRelative = relative;
+	}
+
 	public RatioLayout(Context context)
 	{
 		super(context,null);
