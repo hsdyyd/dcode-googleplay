@@ -17,6 +17,7 @@ import com.nineoldandroids.animation.ValueAnimator.AnimatorUpdateListener;
 
 import android.support.v4.animation.AnimatorUpdateListenerCompat;
 import android.support.v4.animation.ValueAnimatorCompat;
+import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
@@ -70,8 +71,17 @@ public class AppDetailSafeHolder extends BaseHolder<AppInfoBean> implements OnCl
 			BitmapHelp.display(ivDes, Constants.URLS.IMAGEBASEURL+safeBean.safeDesUrl);
 			TextView tvDes = new TextView(UIUtils.getContext());
 			tvDes.setText(safeBean.safeDes);
+			if(safeBean.safeDesColor==0)
+			{
+				tvDes.setTextColor(UIUtils.getColor(R.color.app_detail_safe_normal));
+			}
+			else
+			{
+				tvDes.setTextColor(UIUtils.getColor(R.color.app_detail_safe_warning));
+			}
 			ll.addView(ivDes);
 			ll.addView(tvDes);
+			ll.setGravity(Gravity.CENTER_VERTICAL);
 			
 			int padding = UIUtils.dip2Px(5);
 			ll.setPadding(padding , padding, padding, padding);

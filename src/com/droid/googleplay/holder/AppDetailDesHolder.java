@@ -75,6 +75,7 @@ public class AppDetailDesHolder extends BaseHolder<AppInfoBean> implements OnCli
 				mTvDes.getViewTreeObserver().removeGlobalOnLayoutListener(this);
 			}
 		});
+		
 	}
 
 	@Override
