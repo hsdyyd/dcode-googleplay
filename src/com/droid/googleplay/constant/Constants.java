@@ -21,6 +21,7 @@ public class Constants
 	{
 		public static final String BASEURL = "http://10.0.3.2:8080/GooglePlayServer/";
 		public static final String IMAGEBASEURL = BASEURL+"image?name=";
+		public static final String DOWNLOADURL = BASEURL+"download";
 		
 	}
 }
