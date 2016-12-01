@@ -10,6 +10,7 @@ import com.droid.googleplay.holder.AppDetailDesHolder;
 import com.droid.googleplay.holder.AppDetailInfoHolder;
 import com.droid.googleplay.holder.AppDetailPicHolder;
 import com.droid.googleplay.holder.AppDetailSafeHolder;
+import com.droid.googleplay.manager.DownloadManager;
 import com.droid.googleplay.protocol.DetailProtocol;
 import com.droid.googleplay.utils.UIUtils;
 import com.lidroid.xutils.ViewUtils;
@@ -50,6 +51,7 @@ public class DetailActivity extends BaseActivity
 	@ViewInject(R.id.app_detail_safe)
 	FrameLayout mContainerSafe;
 	private LoadingPager mLoadingPager;
+	private AppDetailBottomHolder mAppDetailBottomHolder;
 //	@Override
 //	protected void onCreate(Bundle savedInstanceState)
 //	{
@@ -145,9 +147,10 @@ public class DetailActivity extends BaseActivity
 		View view = View.inflate(UIUtils.getContext(),R.layout.activity_detail, null);
 		ViewUtils.inject(this,view);
 		
-		AppDetailBottomHolder appDetailBottomHolder = new AppDetailBottomHolder();
-		mContainerBottom.addView(appDetailBottomHolder.getViewHolder());
-		appDetailBottomHolder.setDataAndRefreshHolderView(mData);
+		mAppDetailBottomHolder = new AppDetailBottomHolder();
+		mContainerBottom.addView(mAppDetailBottomHolder.getViewHolder());
+		mAppDetailBottomHolder.setDataAndRefreshHolderView(mData);
+		DownloadManager.getInstance().addObserver(mAppDetailBottomHolder);
 		
 		AppDetailDesHolder appDetailDesHolder = new AppDetailDesHolder();
 		mContainerDes.addView(appDetailDesHolder.getViewHolder());
@@ -166,5 +169,25 @@ public class DetailActivity extends BaseActivity
 		appDetailSafeHolder.setDataAndRefreshHolderView(mData);
 		
 		return view;
+	}
+	
+	@Override
+	protected void onPause()
+	{
+		if(mAppDetailBottomHolder!=null)
+		{
+			DownloadManager.getInstance().deleteObserver(mAppDetailBottomHolder);
+		}
+		super.onPause();
+	}
+	
+	@Override
+	protected void onResume()
+	{
+		if(mAppDetailBottomHolder!=null)
+		{
+			mAppDetailBottomHolder.addObserverAndRefresh();
+		}
+		super.onResume();
 	}
 }
