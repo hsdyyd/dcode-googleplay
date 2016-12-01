@@ -1,9 +1,15 @@
 package com.droid.googleplay.holder;
 
+import java.io.File;
+
 import com.droid.googleplay.R;
 import com.droid.googleplay.base.BaseHolder;
 import com.droid.googleplay.bean.AppInfoBean;
+import com.droid.googleplay.constant.Constants;
+import com.droid.googleplay.factory.ThreadPoolFactory;
+import com.droid.googleplay.manager.DownloadInfo;
 import com.droid.googleplay.manager.DownloadManager;
+import com.droid.googleplay.utils.FileUtils;
 import com.droid.googleplay.utils.UIUtils;
 import com.droid.googleplay.view.ProgressButton;
 import com.lidroid.xutils.ViewUtils;
@@ -53,11 +59,30 @@ public class AppDetailBottomHolder extends BaseHolder<AppInfoBean> implements On
 		switch (v.getId())
 		{
 			case R.id.app_detail_download_btn_download:
-				DownloadManager.getInstance().getDownLoadInfo(mData);
+				doDownLoad();
+				break;
+			case R.id.app_detail_download_btn_share:
+				
+				break;
+			case R.id.app_detail_download_btn_favo:
+				
 				break;
 			default:
 				break;
 		}
+	}
+
+	private void doDownLoad()
+	{
+		String dir = FileUtils.getDir("download");
+		File file = new File(dir,mData.packageName+".apk");
+		String savePath = file.getAbsolutePath();
+		DownloadInfo info = new DownloadInfo();
+		info.downloadUrl = mData.downloadUrl;
+		info.savePath = savePath;
+		
+		DownloadManager.getInstance().download(info);
+		
 	}
 
 }
