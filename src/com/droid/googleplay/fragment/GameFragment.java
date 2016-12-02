@@ -9,6 +9,7 @@ import com.droid.googleplay.base.LoadingPager.LoadResult;
 import com.droid.googleplay.bean.AppInfoBean;
 import com.droid.googleplay.factory.ListViewFactory;
 import com.droid.googleplay.holder.AppItemHolder;
+import com.droid.googleplay.manager.DownloadManager;
 import com.droid.googleplay.protocol.GameProtocol;
 
 import android.view.View;
@@ -26,6 +27,7 @@ public class GameFragment extends BaseFragment
 
 	private List<AppInfoBean> mData;
 	private GameProtocol mGemeProtocol;
+	private GameAdapter mGameAdapter;
 
 	@Override
 	public LoadResult initData()
@@ -51,7 +53,8 @@ public class GameFragment extends BaseFragment
 	{
 		ListView listView = ListViewFactory.createListView();
 		
-		listView.setAdapter(new GameAdapter(listView,mData));
+		mGameAdapter = new GameAdapter(listView,mData);
+		listView.setAdapter(mGameAdapter);
 		
 		return listView;
 	}
@@ -69,5 +72,33 @@ public class GameFragment extends BaseFragment
 			return mGemeProtocol.loadData(mData.size());
 		}
 		
+	}
+	
+	@Override
+	public void onResume()
+	{
+		if(mGameAdapter!=null)
+		{
+			List<AppItemHolder> appItemHolders = mGameAdapter.getAppItemHolders();
+			for (AppItemHolder appItemHolder : appItemHolders) {
+				DownloadManager.getInstance().addObserver(appItemHolder);//删除
+			}
+			// 手动刷新-->重新获取状态,然后更新ui
+			mGameAdapter.notifyDataSetChanged();
+		}
+		super.onResume();
+	}
+	
+	@Override
+	public void onPause()
+	{
+		if(mGameAdapter!=null)
+		{
+			List<AppItemHolder> appItemHolders = mGameAdapter.getAppItemHolders();
+			for (AppItemHolder appItemHolder : appItemHolders) {
+				DownloadManager.getInstance().deleteObserver(appItemHolder);//删除
+			}
+		}
+		super.onPause();
 	}
 }

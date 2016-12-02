@@ -5,6 +5,7 @@ import com.droid.googleplay.base.BaseActivity;
 import com.droid.googleplay.base.BaseFragment;
 import com.droid.googleplay.base.LoadingPager;
 import com.droid.googleplay.factory.FragmentFactory;
+import com.droid.googleplay.holder.MenuHolder;
 import com.droid.googleplay.utils.UIUtils;
 
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -21,6 +22,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 /**
@@ -39,6 +41,7 @@ public class MainActivity extends BaseActivity
 	private String[]					mMainTitles;
 	private DrawerLayout mDrawerLayout;
 	private ActionBarDrawerToggle mToggle;
+	private FrameLayout	mMain_menu;
 
 //	@Override
 //	protected void onCreate(Bundle savedInstanceState)
@@ -72,6 +75,8 @@ public class MainActivity extends BaseActivity
 		mViewPager = (ViewPager) findViewById(R.id.main_viewpager);
 		
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.main_drawer);
+		
+		mMain_menu = (FrameLayout)findViewById(R.id.main_menu);
 	}
 
 	/** 初始化ActionBar **/
@@ -115,6 +120,10 @@ public class MainActivity extends BaseActivity
 
 		// 绑定tabs到viewpager上
 		mTabs.setViewPager(mViewPager);
+		
+		MenuHolder menuHolder = new MenuHolder();
+		mMain_menu.addView(menuHolder.getViewHolder());
+		menuHolder.setDataAndRefreshHolderView(null);
 	}
 
 	@Override

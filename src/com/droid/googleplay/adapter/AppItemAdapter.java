@@ -1,5 +1,6 @@
 package com.droid.googleplay.adapter;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import com.droid.googleplay.activity.DetailActivity;
@@ -7,6 +8,7 @@ import com.droid.googleplay.base.BaseHolder;
 import com.droid.googleplay.base.SuperBaseAdapter;
 import com.droid.googleplay.bean.AppInfoBean;
 import com.droid.googleplay.holder.AppItemHolder;
+import com.droid.googleplay.manager.DownloadManager;
 import com.droid.googleplay.utils.UIUtils;
 
 import android.content.Intent;
@@ -23,6 +25,13 @@ import android.widget.AdapterView;
 */
 public class AppItemAdapter extends SuperBaseAdapter<AppInfoBean>
 {
+	private List<AppItemHolder> mAppItemHolders	= new LinkedList<AppItemHolder>();
+	
+	public List<AppItemHolder> getAppItemHolders()
+	{
+		return mAppItemHolders;
+	}
+
 	public AppItemAdapter(AbsListView absListView, List<AppInfoBean> dataSource)
 	{
 		super(absListView, dataSource);
@@ -31,7 +40,10 @@ public class AppItemAdapter extends SuperBaseAdapter<AppInfoBean>
 	@Override
 	public BaseHolder getSpecialHolder(int position)
 	{
-		return new AppItemHolder();
+		AppItemHolder appItemHolder = new AppItemHolder();
+		mAppItemHolders.add(appItemHolder);
+		DownloadManager.getInstance().addObserver(appItemHolder);
+		return appItemHolder;
 	}
 
 	@Override

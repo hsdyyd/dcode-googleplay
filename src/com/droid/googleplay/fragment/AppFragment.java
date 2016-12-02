@@ -10,6 +10,7 @@ import com.droid.googleplay.base.SuperBaseAdapter;
 import com.droid.googleplay.bean.AppInfoBean;
 import com.droid.googleplay.factory.ListViewFactory;
 import com.droid.googleplay.holder.AppItemHolder;
+import com.droid.googleplay.manager.DownloadManager;
 import com.droid.googleplay.protocol.AppProtocol;
 import com.droid.googleplay.utils.UIUtils;
 
@@ -31,6 +32,7 @@ public class AppFragment extends BaseFragment
 
 	private List<AppInfoBean> mDatas;
 	private AppProtocol mAppProtocol;
+	private AppAdapter mAppAdapter;
 
 	@Override
 	public LoadResult initData()
@@ -55,7 +57,8 @@ public class AppFragment extends BaseFragment
 	{
 		ListView listView = ListViewFactory.createListView();
 		
-		listView.setAdapter(new AppAdapter(listView,mDatas));
+		mAppAdapter = new AppAdapter(listView,mDatas);
+		listView.setAdapter(mAppAdapter);
 		
 		return listView;
 	}
@@ -73,5 +76,33 @@ public class AppFragment extends BaseFragment
 		{
 			return mAppProtocol.loadData(mDatas.size());
 		}
+	}
+	
+	@Override
+	public void onResume()
+	{
+		if(mAppAdapter!=null)
+		{
+			List<AppItemHolder> appItemHolders = mAppAdapter.getAppItemHolders();
+			for (AppItemHolder appItemHolder : appItemHolders) {
+				DownloadManager.getInstance().addObserver(appItemHolder);//删除
+			}
+			// 手动刷新-->重新获取状态,然后更新ui
+			mAppAdapter.notifyDataSetChanged();
+		}
+		super.onResume();
+	}
+	
+	@Override
+	public void onPause()
+	{
+		if(mAppAdapter!=null)
+		{
+			List<AppItemHolder> appItemHolders = mAppAdapter.getAppItemHolders();
+			for (AppItemHolder appItemHolder : appItemHolders) {
+				DownloadManager.getInstance().deleteObserver(appItemHolder);//删除
+			}
+		}
+		super.onPause();
 	}
 }

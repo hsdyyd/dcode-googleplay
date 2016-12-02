@@ -12,6 +12,7 @@ import com.droid.googleplay.bean.HomeBean;
 import com.droid.googleplay.factory.ListViewFactory;
 import com.droid.googleplay.holder.AppItemHolder;
 import com.droid.googleplay.holder.PictureHolder;
+import com.droid.googleplay.manager.DownloadManager;
 import com.droid.googleplay.protocol.HomeProtocol;
 import com.droid.googleplay.utils.UIUtils;
 
@@ -32,6 +33,7 @@ public class HomeFragment extends BaseFragment
 
 	private List<AppInfoBean> mDatas;
 	private List<String> mPictures;
+	private HomeAdapter mHomeAdapter;
 
 	@Override
 	public LoadResult initData()
@@ -106,7 +108,8 @@ public class HomeFragment extends BaseFragment
 		
 		lv.addHeaderView(viewHolder);
 		
-		lv.setAdapter(new HomeAdapter(lv,mDatas));
+		mHomeAdapter = new HomeAdapter(lv,mDatas);
+		lv.setAdapter(mHomeAdapter);
 		return lv;
 	}
 	
@@ -184,5 +187,33 @@ public class HomeFragment extends BaseFragment
 //			TextView mTvTmp2;
 //		}
 		
+	}
+	
+	@Override
+	public void onResume()
+	{
+		if(mHomeAdapter!=null)
+		{
+			List<AppItemHolder> appItemHolders = mHomeAdapter.getAppItemHolders();
+			for (AppItemHolder appItemHolder : appItemHolders) {
+				DownloadManager.getInstance().addObserver(appItemHolder);//删除
+			}
+			// 手动刷新-->重新获取状态,然后更新ui
+			mHomeAdapter.notifyDataSetChanged();
+		}
+		super.onResume();
+	}
+	
+	@Override
+	public void onPause()
+	{
+		if(mHomeAdapter!=null)
+		{
+			List<AppItemHolder> appItemHolders = mHomeAdapter.getAppItemHolders();
+			for (AppItemHolder appItemHolder : appItemHolders) {
+				DownloadManager.getInstance().deleteObserver(appItemHolder);//删除
+			}
+		}
+		super.onPause();
 	}
 }
